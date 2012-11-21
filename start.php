@@ -15,18 +15,34 @@
 
     //first, obtain the data initially present in the text file
     $ini_handle = fopen($filename, "r");
-    $wlux_sid = fread($ini_handle, filesize($filename));
+    $old_string = fread($ini_handle, filesize($filename));
 
-//  echo 'SessionID = '.$wlux_sid.'</br></br>';
+	//parse string
+    $array = explode(" ", $old_string);
+    $wlux_sid = $array[0];   //session ID passed to the study site
+    $condition = $array[1];
 
     fclose($ini_handle);
     //done obtaining initially present data
 
     //write new data to the file, along with the old data
-	$handle = fopen($filename, "w+");
+	$handle = fopen($filename, "w");
+	
+	//new incremented session ID
     $new_sid = $wlux_sid + 1;
+    
+    //incrementing condition - 1,2 or 3
+    $condition = $condition + 1;
+    
+    if($condition == 4)
+    	$condition = 1;
+    
+    //adding CSS stylesheets for the condition
+   	$css = 'css/style'.$condition.'.css';
+    
+    $new_string = $new_sid.' '.$condition.' '.$css."\n".$old_string; 
 
-    if (fwrite($handle, $new_sid) === false)
+    if (fwrite($handle, $new_string) === false)
 	{
            echo "Cannot write to text file. <br />";
     }
