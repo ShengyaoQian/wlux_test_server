@@ -27,20 +27,20 @@
 
     //write new data to the file, along with the old data
 	$handle = fopen($filename, "w");
-	
+
 	//new incremented session ID
     $new_sid = $wlux_sid + 1;
-    
-    //incrementing condition - 1,2 or 3
+
+    //incrementing condition - 1,2,3, or 4
     $condition = $condition + 1;
-    
-    if($condition == 4)
+
+    if($condition == 5)
     	$condition = 1;
-    
+
     //adding CSS stylesheets for the condition
    	$css = 'css/style'.$condition.'.css';
-    
-    $new_string = $new_sid.' '.$condition.' '.$css."\n".$old_string; 
+
+    $new_string = $new_sid.' '.$condition.' '.$css."\n".$old_string;
 
     if (fwrite($handle, $new_string) === false)
 	{
@@ -54,18 +54,18 @@
 		cellspacing="1">
 		<tr>
 			<td>
-				<form name="form1" method="GET" action="hearts.php">
+				<form name="form1" method="GET" action="/site/hearts.html">
 					<table width="100%" border="0" cellspacing="1" cellpadding="3">
 						<tr>
 							<td width="100%"></br>Thank you for agreeing to participate in our survey. </br>Please click on continue to begin the survey</td>
 						</tr>
 						<tr>
 							<td>
-								<input type="submit" name="Submit" value="Continue">
+								<input type="submit">
 							</td>
 						</tr>
 					</table>
-					<input type="hidden" name="sid" value="<?=$wlux_sid?>" />
+					<input type="hidden" name="wlux_session" value="<?=$wlux_sid?>" />
 				</form>
 			</td>
 		</tr>

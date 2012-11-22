@@ -1,80 +1,60 @@
 OPEN
+	SESSION:	5
 	LOCATION:	http://localhost/data_reporting/test1.html
-	TIME:	11/12/2012 03:03:30 pm
+	TIME:	11/20/2012 03:02:53 pm
 
 TRANSITION
+	SESSION:	5
 	FROM:	http://localhost/data_reporting/test1.html
 	TO:		http://localhost/data_reporting/test2.html
-	TIME:	11/12/2012 03:03:31 pm
+	TIME:	11/20/2012 03:02:55 pm
 
 OPEN
+	SESSION:	5
 	LOCATION:	http://localhost/data_reporting/test2.html
-	TIME:	11/12/2012 03:03:31 pm
+	TIME:	11/20/2012 03:02:55 pm
 
 TRANSITION
+	SESSION:	5
 	FROM:	http://localhost/data_reporting/test2.html
 	TO:		http://localhost/data_reporting/test3.html
-	TIME:	11/12/2012 03:03:31 pm
+	TIME:	11/20/2012 03:02:59 pm
 
 OPEN
+	SESSION:	5
 	LOCATION:	http://localhost/data_reporting/test3.html
-	TIME:	11/12/2012 03:03:31 pm
+	TIME:	11/20/2012 03:02:59 pm
 
 TRANSITION
+	SESSION:	5
 	FROM:	http://localhost/data_reporting/test3.html
 	TO:		http://localhost/data_reporting/test1.html
-	TIME:	11/12/2012 03:03:31 pm
+	TIME:	11/20/2012 03:03:13 pm
 
 OPEN
+	SESSION:	5
 	LOCATION:	http://localhost/data_reporting/test1.html
-	TIME:	11/12/2012 03:03:32 pm
+	TIME:	11/20/2012 03:03:14 pm
 
 TRANSITION
+	SESSION:	5
 	FROM:	http://localhost/data_reporting/test1.html
 	TO:		http://localhost/data_reporting/test2.html
-	TIME:	11/12/2012 03:03:32 pm
+	TIME:	11/20/2012 03:03:17 pm
 
 OPEN
+	SESSION:	5
 	LOCATION:	http://localhost/data_reporting/test2.html
-	TIME:	11/12/2012 03:03:32 pm
-
-OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test1.html
-	TIME:	11/13/2012 03:12:33 pm
+	TIME:	11/20/2012 03:03:17 pm
 
 TRANSITION
-	FROM:	http://students.washington.edu/rbwatson/data_reporting/test1.html
-	TO:		http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TIME:	11/13/2012 03:12:34 pm
+	SESSION:	5
+	FROM:	http://localhost/data_reporting/test2.html
+	TO:		http://localhost/data_reporting/test3.html
+	TIME:	11/20/2012 03:03:22 pm
 
 OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TIME:	11/13/2012 03:12:34 pm
-
-TRANSITION
-	FROM:	http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TO:		http://students.washington.edu/rbwatson/data_reporting/test3.html
-	TIME:	11/13/2012 03:12:35 pm
-
-OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test3.html
-	TIME:	11/13/2012 03:12:35 pm
-
-TRANSITION
-	FROM:	http://students.washington.edu/rbwatson/data_reporting/test3.html
-	TO:		http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TIME:	11/13/2012 03:12:36 pm
-
-OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TIME:	11/13/2012 03:12:36 pm
-
-TRANSITION
-	FROM:	http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TO:		http://students.washington.edu/rbwatson/data_reporting/test1.html
-	TIME:	11/13/2012 03:12:37 pm
-
-OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test1.html
-	TIME:	11/13/2012 03:12:37 pm
+	SESSION:	5
+	LOCATION:	http://localhost/data_reporting/test3.html
+	TIME:	11/20/2012 03:03:22 pm
 
