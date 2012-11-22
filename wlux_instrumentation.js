@@ -41,7 +41,7 @@ var WLUX = (function() {
     }
 
     // appends the session id and condition id to all links on a page
-    function updateLinks(sessionId, conditionId) {
+    function updateLinks(sessId, condId) {
         $wlux("a").attr('href', function(i, val) {
             if (typeof(val) == 'undefined')
                 return; // element has no href, no change
@@ -64,20 +64,51 @@ var WLUX = (function() {
             var strArray = [val, start, sessIdKey, '=', sessId,
                             '&', condIdKey, '=', condId, frag];
 
-            strArray = strArray.join('');
+            return strArray.join('');
         });
     }
 
     // logs page transitions
-    function logTransition(from, to) {
+    function logTransition(from, to, sessionId) {
         $wlux.post(loggerURL, {"type" : "transition",
-                               "wlux_session" : SESSION_ID,
+                               "wlux_session" : sessionId,
                                "from" : from,
                                "to" : to});
     }
 
+    // loads styles from the css file at the given url
     function loadCSS(cssURL) {
+        // IE requires us to call this ie-only function
+        if (document.createStyleSheet) {
+            document.createStyleSheet(cssURL);
+        } else {
+            var css = $wlux('<link>').attr({'rel': 'stylesheet',
+                                            'type': 'text/css',
+                                            'href': cssURL});
+            $wlux('head').append(css);
+        }
+    }
 
+    //adds a fixed-position "end" button to page
+    function setupReturnButton(text, url) {
+        var button = $wlux('<button>').attr({'type': 'button'})
+                                      .css({'position': 'relative',
+                                            'width': '80px',
+                                            'margin-left': '-40px',
+                                            'margin-top': '5px',
+                                            'left': '50%'})
+                                      .text(text);
+        var link = $wlux('<a>').attr({'href': url});
+        var div = $wlux('<div>').attr({'id': 'endButton'})
+                                .css({'position': 'fixed',
+                                      'background-color': 'red',
+                                      'right': '10px',
+                                      'top': '10px',
+                                      'width': '100px',
+                                      'height': '30px'});
+        link.append(button);
+        div.append(link);
+        $wlux('body').append(div);
     }
 
     // This function will be called on dom ready.
@@ -91,17 +122,17 @@ var WLUX = (function() {
         // var data = getStudyData();
         // we'll just use this for now until the service is setup
         data = {cssURL: "css/test1.css",
-                returnURL: "/server/end.php",
+                returnURL: "/server/end.html",
                 buttonText: "End Study",
                 conditionId: 1};
 
-        loadCSS(data.css);
+        loadCSS(data.cssURL);
         setupReturnButton(data.buttonText, data.returnURL);
-        updateLinks(sessionId, conditionId);
+        updateLinks(sessionId, data.conditionId);
 
         // log the page open event immediately
         $wlux.post(loggerURL, {"type" : "open",
-                               "wlux_session" : SESSION_ID,
+                               "wlux_session" : sessionId,
                                "location" : window.location.href});
 
         // Log transitions
@@ -110,7 +141,7 @@ var WLUX = (function() {
         $wlux("a").click(function(e) {
             var from = window.location.href;
             var to = e.target.href;
-            logTransition(from, to);
+            logTransition(from, to, sessionId);
         });
 
         // enableClicks();

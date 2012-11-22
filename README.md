@@ -8,3 +8,8 @@ in order for everything to work properly.
 Then, start up your webserver and navigate to `localhost/server/start.php` to
 begin a study. Study results will be located at `localhost/server/log.txt`.
 
+Also, don't forget to make sure the server folder has write privileges.
+On linux, it's as simple as changing to the site root and typing
+`sudo chmod 664 server`. You may also need to modify the permissions of the
+text files inside of `server` so that you can write to them.
+
