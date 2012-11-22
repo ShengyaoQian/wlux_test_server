@@ -54,7 +54,7 @@
 		cellspacing="1">
 		<tr>
 			<td>
-				<form name="form1" method="GET" action="http://students.washington.edu/rbwatson/hearts.php">
+				<form name="form1" method="GET" action="http://students.washington.edu/rbwatson/hearts.html">
 					<table width="100%" border="0" cellspacing="1" cellpadding="3">
 						<tr>
 							<td width="100%"></br>Thank you for agreeing to participate in our survey. </br>Please click on continue to begin the survey</td>
