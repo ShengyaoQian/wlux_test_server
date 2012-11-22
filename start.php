@@ -1,74 +1,61 @@
 <html>
-<head></head>
-<body>
-	<table width="400" border="0" align="center" cellpadding="3"
-		cellspacing="1">
-		<tr>
-			<td>
-				<strong></br></br></br>WebLabUX Survey Consent Form </strong>
-			</td>
-		</tr>
-	</table>
+    <head>
+        <style type="text/css">
+        h2 { margin-top: 1em; }
+        div.container { width: 500px; margin: auto; }
+        </style>
+    </head>
 
-	<?php
-	$filename = "sessions.txt";
+    <body>
+        <div class="container">
 
-    //first, obtain the data initially present in the text file
-    $ini_handle = fopen($filename, "r");
-    $old_string = fread($ini_handle, filesize($filename));
+            <?php
+            $filename = "sessions.txt";
 
-	//parse string
-    $array = explode(" ", $old_string);
-    $wlux_sid = $array[0];   //session ID passed to the study site
-    $condition = $array[1];
+            //first, obtain the data initially present in the text file
+            $ini_handle = fopen($filename, "r");
+            $old_string = fread($ini_handle, filesize($filename));
 
-    fclose($ini_handle);
-    //done obtaining initially present data
+            //parse string
+            $array = explode(" ", $old_string);
+            $wlux_sid = $array[0];   //session ID passed to the study site
+            $condition = $array[1];
 
-    //write new data to the file, along with the old data
-	$handle = fopen($filename, "w");
-	
-	//new incremented session ID
-    $new_sid = $wlux_sid + 1;
-    
-    //incrementing condition - 1,2 or 3
-    $condition = $condition + 1;
-    
-    if($condition == 4)
-    	$condition = 1;
-    
-    //adding CSS stylesheets for the condition
-   	$css = 'css/style'.$condition.'.css';
-    
-    $new_string = $new_sid.' '.$condition.' '.$css."\n".$old_string; 
+            fclose($ini_handle);
+            //done obtaining initially present data
 
-    if (fwrite($handle, $new_string) === false)
-	{
-           echo "Cannot write to text file. <br />";
-    }
-    fclose($handle);
-    ?>
+            //write new data to the file, along with the old data
+            $handle = fopen($filename, "w");
 
+            //new incremented session ID
+            $new_sid = $wlux_sid + 1;
 
-	<table width="400" border="0" align="center" cellpadding="0"
-		cellspacing="1">
-		<tr>
-			<td>
-				<form name="form1" method="GET" action="http://students.washington.edu/rbwatson/hearts.php">
-					<table width="100%" border="0" cellspacing="1" cellpadding="3">
-						<tr>
-							<td width="100%"></br>Thank you for agreeing to participate in our survey. </br>Please click on continue to begin the survey</td>
-						</tr>
-						<tr>
-							<td>
-								<input type="submit" name="Submit" value="Continue">
-							</td>
-						</tr>
-					</table>
-					<input type="hidden" name="sid" value="<?=$wlux_sid?>" />
-				</form>
-			</td>
-		</tr>
-	</table>
-</body>
+            //incrementing condition - 1,2,3, or 4
+            $condition = $condition + 1;
+
+            if($condition == 5)
+                $condition = 1;
+
+            //adding CSS stylesheets for the condition
+            $css = 'css/style'.$condition.'.css';
+
+            $new_string = $new_sid.' '.$condition.' '.$css."\n".$old_string;
+
+            if (fwrite($handle, $new_string) === false)
+            {
+                   echo "Cannot write to text file. <br />";
+            }
+            fclose($handle);
+            ?>
+
+            <h2>WebLabUX Survey Consent Form </h2>
+
+            <p>Thank you for agreeing to participate in our survey.<br />
+            Please click on continue to begin the survey</p>
+            <form name="form1" method="GET" action="/site/hearts.html">
+                <input type="hidden" name="wlux_session" value="<?=$wlux_sid?>" />
+                <input type="submit" value="continue" />
+            </form>
+        </div> <!-- container -->
+    </body>
 </html>
