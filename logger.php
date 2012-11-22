@@ -12,19 +12,23 @@ $data_arr = array();
 if ($type == "open") {
     $data_arr = array("OPEN",
                       "\tSESSION:\t" . $_POST["wlux_session"],
+                      "\tCONDITION:\t" . $_POST["wlux_condition"],
                       "\tLOCATION:\t" . $_POST["location"],
                       "\tTIME:\t" . date('m/d/Y h:i:s a', time()));
 } else if ($type == "transition") {
     $data_arr = array("TRANSITION",
                       "\tSESSION:\t" . $_POST["wlux_session"],
+                      "\tCONDITION:\t" . $_POST["wlux_condition"],
                       "\tFROM:\t" . $_POST["from"],
                       "\tTO:\t\t" . $_POST["to"],
                       "\tTIME:\t" . date('m/d/Y h:i:s a', time()));
 
 }
 
+
+$file = "sess" . $_POST["wlux_session"] . "cond" . $_POST["wlux_condition"] . ".txt";
 $data = implode("\n", $data_arr) . "\n\n";
-file_put_contents("log.txt", $data, FILE_APPEND);
+file_put_contents('study_results/' . $file, $data, FILE_APPEND);
 
 ?>
 

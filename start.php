@@ -23,8 +23,6 @@
 
             fclose($ini_handle);
             //done obtaining initially present data
-
-            //write new data to the file, along with the old data
             $handle = fopen($filename, "w");
 
             //new incremented session ID
