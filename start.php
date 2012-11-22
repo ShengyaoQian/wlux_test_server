@@ -52,7 +52,7 @@
 
             <p>Thank you for agreeing to participate in our survey.<br />
             Please click on continue to begin the survey</p>
-            <form name="form1" method="GET" action="/site/hearts.html">
+            <form name="form1" method="GET" action="http://students.washington.edu/rbwatson/hearts.html">
                 <input type="hidden" name="wlux_session" value="<?=$wlux_sid?>" />
                 <input type="submit" value="continue" />
             </form>

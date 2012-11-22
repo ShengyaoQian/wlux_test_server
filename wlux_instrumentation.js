@@ -122,7 +122,7 @@ var WLUX = (function() {
         // var data = getStudyData();
         // we'll just use this for now until the service is setup
         data = {cssURL: "css/test1.css",
-                returnURL: "/server/end.html",
+                returnURL: "http://staff.washington.edu/rbwatson/end.html",
                 buttonText: "End Study",
                 conditionId: 1};
 
