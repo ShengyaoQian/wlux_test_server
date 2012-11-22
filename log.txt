@@ -1,80 +1,120 @@
 OPEN
-	LOCATION:	http://localhost/data_reporting/test1.html
-	TIME:	11/12/2012 03:03:30 pm
+	SESSION:	123458
+	LOCATION:	http://localhost/site/hearts.html?wlux_session=123458
+	TIME:	11/21/2012 06:08:16 pm
 
 TRANSITION
-	FROM:	http://localhost/data_reporting/test1.html
-	TO:		http://localhost/data_reporting/test2.html
-	TIME:	11/12/2012 03:03:31 pm
+	SESSION:	123458
+	FROM:	http://localhost/site/hearts.html?wlux_session=123458
+	TO:		http://localhost/site/hearts.html?wlux_session=123458&wlux_condition=1
+	TIME:	11/21/2012 06:08:18 pm
 
 OPEN
-	LOCATION:	http://localhost/data_reporting/test2.html
-	TIME:	11/12/2012 03:03:31 pm
+	SESSION:	123458
+	LOCATION:	http://localhost/site/hearts.html?wlux_session=123458&wlux_condition=1
+	TIME:	11/21/2012 06:08:18 pm
 
 TRANSITION
-	FROM:	http://localhost/data_reporting/test2.html
-	TO:		http://localhost/data_reporting/test3.html
-	TIME:	11/12/2012 03:03:31 pm
+	SESSION:	123458
+	FROM:	http://localhost/site/hearts.html?wlux_session=123458&wlux_condition=1
+	TO:		http://localhost/site/spades.html?wlux_session=123458&wlux_condition=1
+	TIME:	11/21/2012 06:08:19 pm
 
 OPEN
-	LOCATION:	http://localhost/data_reporting/test3.html
-	TIME:	11/12/2012 03:03:31 pm
+	SESSION:	123458
+	LOCATION:	http://localhost/site/spades.html?wlux_session=123458&wlux_condition=1
+	TIME:	11/21/2012 06:08:19 pm
 
 TRANSITION
-	FROM:	http://localhost/data_reporting/test3.html
-	TO:		http://localhost/data_reporting/test1.html
-	TIME:	11/12/2012 03:03:31 pm
+	SESSION:	123458
+	FROM:	http://localhost/site/spades.html?wlux_session=123458&wlux_condition=1
+	TO:		http://localhost/site/spades.html?wlux_session=123458&wlux_condition=1#l1
+	TIME:	11/21/2012 06:08:21 pm
 
 OPEN
-	LOCATION:	http://localhost/data_reporting/test1.html
-	TIME:	11/12/2012 03:03:32 pm
+	SESSION:	123458
+	LOCATION:	http://localhost/site/hearts.html?wlux_session=123458
+	TIME:	11/21/2012 06:10:16 pm
+
+OPEN
+	SESSION:	123465
+	LOCATION:	http://localhost/site/hearts.html?wlux_session=123465
+	TIME:	11/21/2012 06:18:06 pm
+
+OPEN
+	SESSION:	123477
+	LOCATION:	http://localhost/site/hearts.html?wlux_session=123477
+	TIME:	11/21/2012 06:24:25 pm
 
 TRANSITION
-	FROM:	http://localhost/data_reporting/test1.html
-	TO:		http://localhost/data_reporting/test2.html
-	TIME:	11/12/2012 03:03:32 pm
+	SESSION:	123477
+	FROM:	http://localhost/site/hearts.html?wlux_session=123477
+	TO:		http://localhost/site/hearts.html?wlux_session=123477#l0
+	TIME:	11/21/2012 06:24:27 pm
 
 OPEN
-	LOCATION:	http://localhost/data_reporting/test2.html
-	TIME:	11/12/2012 03:03:32 pm
-
-OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test1.html
-	TIME:	11/13/2012 03:12:33 pm
+	SESSION:	123477
+	LOCATION:	http://localhost/site/spades.html?wlux_session=123477&wlux_condition=1
+	TIME:	11/21/2012 06:24:32 pm
 
 TRANSITION
-	FROM:	http://students.washington.edu/rbwatson/data_reporting/test1.html
-	TO:		http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TIME:	11/13/2012 03:12:34 pm
-
-OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TIME:	11/13/2012 03:12:34 pm
+	SESSION:	123477
+	FROM:	http://localhost/site/spades.html?wlux_session=123477&wlux_condition=1
+	TO:		http://localhost/site/spades.html?wlux_session=123477&wlux_condition=1#l2
+	TIME:	11/21/2012 06:24:33 pm
 
 TRANSITION
-	FROM:	http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TO:		http://students.washington.edu/rbwatson/data_reporting/test3.html
-	TIME:	11/13/2012 03:12:35 pm
+	SESSION:	123477
+	FROM:	http://localhost/site/spades.html?wlux_session=123477&wlux_condition=1#l2
+	TO:		http://localhost/site/spades.html?wlux_session=123477&wlux_condition=1#l3
+	TIME:	11/21/2012 06:24:36 pm
 
 OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test3.html
-	TIME:	11/13/2012 03:12:35 pm
+	SESSION:	123478
+	LOCATION:	http://localhost/site/hearts.html?wlux_session=123478
+	TIME:	11/21/2012 06:25:59 pm
 
 TRANSITION
-	FROM:	http://students.washington.edu/rbwatson/data_reporting/test3.html
-	TO:		http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TIME:	11/13/2012 03:12:36 pm
-
-OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TIME:	11/13/2012 03:12:36 pm
+	SESSION:	123478
+	FROM:	http://localhost/site/hearts.html?wlux_session=123478
+	TO:		http://localhost/site/hearts.html?wlux_session=123478#l0
+	TIME:	11/21/2012 06:26:01 pm
 
 TRANSITION
-	FROM:	http://students.washington.edu/rbwatson/data_reporting/test2.html
-	TO:		http://students.washington.edu/rbwatson/data_reporting/test1.html
-	TIME:	11/13/2012 03:12:37 pm
+	SESSION:	123478
+	FROM:	http://localhost/site/hearts.html?wlux_session=123478#l0
+	TO:		http://localhost/site/hearts.html?wlux_session=123478#l3
+	TIME:	11/21/2012 06:26:04 pm
 
 OPEN
-	LOCATION:	http://students.washington.edu/rbwatson/data_reporting/test1.html
-	TIME:	11/13/2012 03:12:37 pm
+	SESSION:	123478
+	LOCATION:	http://localhost/site/hearts.html?wlux_session=123478&wlux_condition=1
+	TIME:	11/21/2012 06:26:06 pm
+
+TRANSITION
+	SESSION:	123478
+	FROM:	http://localhost/site/hearts.html?wlux_session=123478&wlux_condition=1
+	TO:		http://localhost/site/spades.html?wlux_session=123478&wlux_condition=1
+	TIME:	11/21/2012 06:26:08 pm
+
+OPEN
+	SESSION:	123478
+	LOCATION:	http://localhost/site/spades.html?wlux_session=123478&wlux_condition=1
+	TIME:	11/21/2012 06:26:08 pm
+
+OPEN
+	SESSION:	123478
+	LOCATION:	http://localhost/site/spades.html?wlux_session=123478&wlux_condition=1
+	TIME:	11/21/2012 06:26:32 pm
+
+OPEN
+	SESSION:	123478
+	LOCATION:	http://localhost/site/spades.html?wlux_session=123478&wlux_condition=1
+	TIME:	11/21/2012 06:26:33 pm
+
+TRANSITION
+	SESSION:	123478
+	FROM:	http://localhost/site/spades.html?wlux_session=123478&wlux_condition=1
+	TO:		
+	TIME:	11/21/2012 06:26:35 pm
 
