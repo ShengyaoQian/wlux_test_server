@@ -1,0 +1,26 @@
+OPEN
+	SESSION:	123479
+	CONDITION:	3
+	LOCATION:	http://localhost/site/hearts.html?wlux_session=123479
+	TIME:	11/21/2012 11:11:07 pm
+
+TRANSITION
+	SESSION:	123479
+	CONDITION:	3
+	FROM:	http://localhost/site/hearts.html?wlux_session=123479
+	TO:		http://localhost/site/hearts.html?wlux_session=123479#l2
+	TIME:	11/21/2012 11:11:13 pm
+
+TRANSITION
+	SESSION:	123479
+	CONDITION:	3
+	FROM:	http://localhost/site/hearts.html?wlux_session=123479#l2
+	TO:		http://localhost/site/hearts.html?wlux_session=123479#home
+	TIME:	11/21/2012 11:11:16 pm
+
+OPEN
+	SESSION:	123479
+	CONDITION:	3
+	LOCATION:	http://localhost/site/spades.html?wlux_session=123479&wlux_condition=3
+	TIME:	11/21/2012 11:11:18 pm
+
