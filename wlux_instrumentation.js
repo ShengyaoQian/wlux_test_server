@@ -7,7 +7,6 @@
 // parameter containing the session id, which it uses to query the
 // server for additional info, and then passes along to subsequent pages.
 
-
 // avoid conflicting with jQuery on the study site (rename $ to $wlux)
 $wlux = jQuery.noConflict();
 
@@ -20,18 +19,23 @@ var WLUX = (function() {
     var sessIdKey = "wlux_session";
     var condIdKey = "wlux_condition";
 
+	//*** DEBUG CODE ****
     // are we testing locally?
     var host = window.location.host;
     var DEBUG = (host.indexOf("localhost") != -1) ||
                 (host.indexOf("127.0.0.1") != -1);
+	//*** DEBUG CODE ****
 
     var loggerURL = "http://staff.washington.edu/rbwatson/logger.php";
     var studyDataURL = "http://staff.washington.edu/rbwatson/study_data.php";
+	//*** DEBUG CODE ****
     if (DEBUG) {
         loggerURL = "/server/logger.php";
         studyDataURL = "/server/study_data.php";
     }
+	//*** DEBUG CODE ****
 
+	// session id passed in if this is page was opened as part of a survey
     var SESSION_ID = null;
     var done = false; // are we done loading wlux?
 
@@ -137,16 +141,24 @@ var WLUX = (function() {
     // This function will be called immediately, when this script is
     // being parsed (i.e. crucially, before the body loads)
     function preLoad() {
+		// Get the session ID from the query string
+		// If there is no session ID, then this page is not part of a study, so exit
+        SESSION_ID = getQsParam(sessIdKey);
+        if (SESSION_ID === null)
+            return;
+		
+		// build the script name string to include the session ID so we can
+		// query the WebLabUX server for more information about this session
+		var scriptString = studyDataURL + '?tag=server_vars&wlux_session=' + SESSION_ID;
+		// add the new script element to the head tag
+   		var headTag = document.getElementsByTagName('head')[0];
+   		var script= document.createElement('script');
+   		script.type= 'text/javascript';
+   		script.src= scriptString;
+   		headTag.appendChild(script);	
+		
+		// set the timeout to show the page body
         timeout = setTimeout(hideBody, 50);
-    }
-
-    // asynchronously request the study data from the data service
-    function getStudyData() {
-        var data = {"wlux_session": SESSION_ID};
-        $wlux.post(studyDataURL, data, function(data) {
-            loadStudyData(data);
-            // todo - check that returned data is valid
-        }).error(function() { loadStudyData({}); });
     }
 
     // calls all the methods that require study data
@@ -181,31 +193,36 @@ var WLUX = (function() {
         $wlux('body').css({'visibility': 'visible'});
         done = true;
     }
-
+	
     // This function will be called on dom ready.
-    function start() {
-        SESSION_ID = getQsParam(sessIdKey);
-        if (SESSION_ID === null)
-            return;
-
-        getStudyData();
+    function start(data) {		
+		// continue processing after the script has loaded
+        loadStudyData(data);
     }
-
+		
     // Here we add the functions and variables we wish to export to
     // the WLUX object
     var exports = {};
     exports.preLoad = preLoad;
     exports.start = start;
-
+	
     return exports;
 })(); // module pattern - we've created an anonymous function and immediately call it
 
-
-// hide the body
+// hide the body & load variables
 WLUX.preLoad();
 
 // do wlux stuff as soon as the dom is ready
 $wlux(document).ready(function() {
-    WLUX.start();
+	// the server_vars object is defined in the script that is 
+	// was added to the head tag.
+	// If data is not defined, then either this page 
+	// wasn't loaded as part of a study, or there was a problem 
+	// getting information from the server.
+	server_vars = function(data) {
+		if (data !== undefined) {
+			WLUX.start(data);
+		}
+	}	
 });
 

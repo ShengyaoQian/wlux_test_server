@@ -1,0 +1,98 @@
+OPEN
+	SESSION:	123490
+	LOCATION:	http://students.washington.edu/rbwatson/hearts.html?wlux_session=123490
+	TIME:	11/22/2012 11:22:48 am
+
+OPEN
+	SESSION:	123490
+	LOCATION:	http://students.washington.edu/rbwatson/hearts.html?wlux_session=123490&wlux_condition=1
+	TIME:	11/22/2012 11:22:50 am
+
+OPEN
+	SESSION:	123490
+	LOCATION:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123490&wlux_condition=1
+	TIME:	11/22/2012 11:22:53 am
+
+TRANSITION
+	SESSION:	123490
+	FROM:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123490&wlux_condition=1
+	TO:		http://students.washington.edu/rbwatson/spades.html?wlux_session=123490&wlux_condition=1
+	TIME:	11/22/2012 11:23:04 am
+
+OPEN
+	SESSION:	123490
+	LOCATION:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123490&wlux_condition=1
+	TIME:	11/22/2012 11:23:05 am
+
+TRANSITION
+	SESSION:	123490
+	FROM:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123490&wlux_condition=1
+	TO:		http://students.washington.edu/rbwatson/spades.html?wlux_session=123490&wlux_condition=1#l2
+	TIME:	11/22/2012 11:23:06 am
+
+TRANSITION
+	SESSION:	123490
+	FROM:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123490&wlux_condition=1#l2
+	TO:		http://students.washington.edu/rbwatson/spades.html?wlux_session=123490&wlux_condition=1#l1
+	TIME:	11/22/2012 11:23:15 am
+
+OPEN
+	SESSION:	123490
+	LOCATION:	http://students.washington.edu/rbwatson/hearts.html?wlux_session=123490&wlux_condition=1
+	TIME:	11/22/2012 11:23:19 am
+
+TRANSITION
+	SESSION:	123490
+	FROM:	http://students.washington.edu/rbwatson/hearts.html?wlux_session=123490&wlux_condition=1
+	TO:		
+	TIME:	11/22/2012 11:23:20 am
+
+OPEN
+	SESSION:	123491
+	LOCATION:	http://students.washington.edu/rbwatson/hearts.html?wlux_session=123491
+	TIME:	11/22/2012 11:30:26 am
+
+OPEN
+	SESSION:	123491
+	LOCATION:	http://students.washington.edu/rbwatson/hearts.html?wlux_session=123491&wlux_condition=1
+	TIME:	11/22/2012 11:30:28 am
+
+TRANSITION
+	SESSION:	123491
+	FROM:	http://students.washington.edu/rbwatson/hearts.html?wlux_session=123491&wlux_condition=1
+	TO:		http://students.washington.edu/rbwatson/spades.html?wlux_session=123491&wlux_condition=1
+	TIME:	11/22/2012 11:30:29 am
+
+OPEN
+	SESSION:	123491
+	LOCATION:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123491&wlux_condition=1
+	TIME:	11/22/2012 11:30:29 am
+
+TRANSITION
+	SESSION:	123491
+	FROM:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123491&wlux_condition=1
+	TO:		http://students.washington.edu/rbwatson/spades.html?wlux_session=123491&wlux_condition=1#l1
+	TIME:	11/22/2012 11:30:30 am
+
+TRANSITION
+	SESSION:	123491
+	FROM:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123491&wlux_condition=1#l1
+	TO:		http://students.washington.edu/rbwatson/spades.html?wlux_session=123491&wlux_condition=1#l3
+	TIME:	11/22/2012 11:30:33 am
+
+TRANSITION
+	SESSION:	123491
+	FROM:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123491&wlux_condition=1#l3
+	TO:		http://students.washington.edu/rbwatson/spades.html?wlux_session=123491&wlux_condition=1#la
+	TIME:	11/22/2012 11:30:36 am
+
+OPEN
+	SESSION:	123491
+	LOCATION:	http://students.washington.edu/rbwatson/spades.html?wlux_session=123491&wlux_condition=1
+	TIME:	11/22/2012 11:30:38 am
+
+OPEN
+	SESSION:	123491
+	LOCATION:	http://students.washington.edu/rbwatson/hearts.html?wlux_session=123491&wlux_condition=1
+	TIME:	11/22/2012 11:30:40 am
+

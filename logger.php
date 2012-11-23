@@ -25,10 +25,18 @@ if ($type == "open") {
 
 }
 
-
 $file = "sess" . $_POST["wlux_session"] . "cond" . $_POST["wlux_condition"] . ".txt";
 $data = implode("\n", $data_arr) . "\n\n";
-file_put_contents('study_results/' . $file, $data, FILE_APPEND);
+$fileResult = file_put_contents('study_results/' . $file, $data, FILE_APPEND);
 
+/*
+if ($fileResult === false) {
+	// error logging data
+	http_response_code(500);
+} else {
+	// success
+	http_response_code(200);
+}
+*/
 ?>
 
