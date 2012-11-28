@@ -88,18 +88,22 @@ var WLUX = (function() {
         // $.post is asynchronous by default, which causes problems if the
         // browser decides to follow the link before carrying out our request
         $wlux.ajaxSetup({async: false}); //
-        $wlux.post(loggerURL, {"type": "transition",
-                               "wlux_session": SESSION_ID,
-                               "from": from,
-                               "to": to});
+        $wlux.post(loggerURL, {"data" : {"type": "transition",
+                                         "wlux_session": SESSION_ID,
+                                         "from": from,
+                                         "to": to }
+                              }
+                  );
     }
 
     // logs page openings
     function logOpen() {
         $wlux.ajaxSetup({async: false}); // do this immediately
-        $wlux.post(loggerURL, {"type": "open",
-                       "wlux_session": SESSION_ID,
-                       "location": window.location.href});
+        $wlux.post(loggerURL, {"data" : {"type": "open",
+                                         "wlux_session": SESSION_ID,
+                                         "location": window.location.href}
+                              }
+                  );
     }
 
     // loads styles from the css file at the url supplied to
