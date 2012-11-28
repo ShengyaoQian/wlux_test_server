@@ -140,7 +140,8 @@ var WLUX = (function() {
         // Log transitions via anchor tags.
         $wlux("a").click(function(e) {
             var from = window.location.href;
-            var to = e.target.href;
+            // currentTarget is necessary for clicking of buttons wrapped in an a tag
+            var to = e.target.href || e.currentTarget.href;
             logTransition(from, to);
         });
     }
