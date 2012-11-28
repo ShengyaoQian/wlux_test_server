@@ -7,7 +7,6 @@
 // parameter containing the session id, which it uses to query the
 // server for additional info, and then passes along to subsequent pages.
 
-
 // avoid conflicting with jQuery on the study site (rename $ to $wlux)
 $wlux = jQuery.noConflict();
 
@@ -20,20 +19,22 @@ var WLUX = (function() {
     var sessIdKey = "wlux_session";
     var condIdKey = "wlux_condition";
 
-    // are we testing locally?
+    var SESSION_ID = null;
+    var done = false; // are we done loading wlux?
+
+    // set the url dynamically depending on whether we're in the
+    // development environment or the production environment
     var host = window.location.host;
-    var DEBUG = (host.indexOf("localhost") != -1) ||
+    var LOCAL = (host.indexOf("localhost") != -1) ||
                 (host.indexOf("127.0.0.1") != -1);
 
     var loggerURL = "http://staff.washington.edu/rbwatson/logger.php";
     var studyDataURL = "http://staff.washington.edu/rbwatson/study_data.php";
-    if (DEBUG) {
+
+    if (LOCAL) {
         loggerURL = "/server/logger.php";
         studyDataURL = "/server/study_data.php";
     }
-
-    var SESSION_ID = null;
-    var done = false; // are we done loading wlux?
 
     // gets a querystring parameter using its key
     // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values
@@ -200,12 +201,20 @@ var WLUX = (function() {
     return exports;
 })(); // module pattern - we've created an anonymous function and immediately call it
 
-
 // hide the body
 WLUX.preLoad();
 
 // do wlux stuff as soon as the dom is ready
 $wlux(document).ready(function() {
-    WLUX.start();
+	// the server_vars object is defined in the script that is
+	// was added to the head tag.
+	// If data is not defined, then either this page
+	// wasn't loaded as part of a study, or there was a problem
+	// getting information from the server.
+	server_vars = function(data) {
+		if (data !== undefined) {
+			WLUX.start(data);
+		}
+	};
 });
 

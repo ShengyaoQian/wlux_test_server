@@ -41,6 +41,7 @@
 ?>
 <html>
     <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style type="text/css">
         h2 { margin-top: 1em; }
         div.container { width: 500px; margin: auto; }
