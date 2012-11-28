@@ -12,7 +12,7 @@
     $data = array();
     $condition = "";
     $cssURL = "";
-    $session = $_POST["wlux_session"];
+    $session = $_GET["wlux_session"];
 
     // get the data from the file. Eventually we need to query a database and
     // ensure the session is a valid, open session

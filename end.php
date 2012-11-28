@@ -1,5 +1,5 @@
 <?php
-    $file = "sess" . $_GET["wlux_session"] . "cond" . $_GET["wlux_condition"] . ".txt";
+    $file = "session" . $_GET["wlux_session"] . ".txt";
 ?>
 <html>
     <head>

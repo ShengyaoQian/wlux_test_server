@@ -22,7 +22,7 @@ while(! feof($file)) {
 }
 fclose($file);
 
-if ($condition != -1 && !isEmpty($session)) {
+if ($condition != -1 && !empty($session)) {
     if ($type == "open") {
         $data_arr = array("OPEN",
                           "\tSESSION:\t" . $_POST["wlux_session"],
@@ -39,7 +39,7 @@ if ($condition != -1 && !isEmpty($session)) {
 
     }
 
-    $file = "sess" . $_POST["wlux_session"] . "cond" . $_POST["wlux_condition"] . ".txt";
+    $file = "session" . $_POST["wlux_session"] . ".txt";
     $data = implode("\n", $data_arr) . "\n\n";
     $fileResult = file_put_contents('study_results/' . $file, $data, FILE_APPEND);
 }
