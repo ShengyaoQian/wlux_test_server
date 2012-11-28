@@ -33,9 +33,8 @@
 
     $new_string = $new_sid.' '.$condition.' '.$css."\n".$old_string;
 
-    if (fwrite($handle, $new_string) === false)
-    {
-           echo "Cannot write to text file. <br />";
+    if (fwrite($handle, $new_string) === false) {
+           echo "Cannot write to text file. Check permissions. <br />";
     }
     fclose($handle);
 ?>
