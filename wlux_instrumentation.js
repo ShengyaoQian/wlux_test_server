@@ -83,8 +83,11 @@ var WLUX = (function() {
         });
     }
 
-    // logs page transitions
+    // logs page transitions.
     function logTransition(from, to) {
+        // $.post is asynchronous by default, which causes problems if the
+        // browser decides to follow the link before carrying out our request
+        $wlux.ajaxSetup({async: false}); //
         $wlux.post(loggerURL, {"type": "transition",
                                "wlux_session": SESSION_ID,
                                "from": from,
@@ -93,6 +96,7 @@ var WLUX = (function() {
 
     // logs page openings
     function logOpen() {
+        $wlux.ajaxSetup({async: false}); // do this immediately
         $wlux.post(loggerURL, {"type": "open",
                        "wlux_session": SESSION_ID,
                        "location": window.location.href});
