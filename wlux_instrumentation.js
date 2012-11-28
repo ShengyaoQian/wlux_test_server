@@ -154,21 +154,21 @@ var WLUX = (function() {
     // Instead of disabling, enabling clicks (which would require
     // waiting for the page to load), we just hide the body as soon
     // as it loads, and show it again later, in the start function
-    var timeout;
+    var interval;
     function preLoad() {
         // try to find/hide body as the page loads, to keep users from interacting
         // with the page until all of our instrumentation is setup
-        timeout = setTimeout(function() {
+        interval = setInterval(function() {
             var body = $wlux('body');
             if (done) { // set in ajax success callback after study data is loaded
                 // the page loaded really fast - even before this method was called
                 // clear the timeout and don't hide the body, we're DONE
-                clearTimeout(timeout);
+                clearInterval(interval);
                 return;
             }
             if (body.length > 0) {
                 body.css({'visibility': 'hidden'});
-                clearTimeout(timeout);
+                clearInterval(interval);
             }
         }, 50); // try every 50ms
     }
@@ -191,7 +191,6 @@ var WLUX = (function() {
             success: function(data) {
                 study_data = data; // just store it locally for later use
 
-                // log the page open event immediately
                 logOpen();
                 loadCSS();
                 setupReturnButton();
@@ -221,7 +220,7 @@ var WLUX = (function() {
     return exports;
 })(); // module pattern - we've created an anonymous function and immediately call it
 
-// initial set up, hide the body
+// use for initial set up, currently just hides the body
 WLUX.preLoad();
 
 // do wlux stuff as soon as the dom is ready
