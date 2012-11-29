@@ -31,7 +31,8 @@
         $data = array("conditionId" => $condition,
                       "cssURL" => $cssURL,
                       "buttonText" => "End Study",
-                      "returnURL" => $returnURL);
+                      "returnURL" => $returnURL,
+                      "taskText" => "Learn to play hearts and spades.");
     } else {
         // this will trigger the jquery ajax call's error handling callback
         header("HTTP/1.1 404 Not Found");

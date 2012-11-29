@@ -120,27 +120,71 @@ var WLUX = (function() {
         }
     }
 
-    //adds a fixed-position "end" button to page
-    // TODO; add this to a fancy dropdown menu the user can reveal by clicking a tab
-    function setupReturnButton() {
-        var button = $wlux('<button>').attr({'type': 'button'})
-                                      .css({'position': 'relative',
-                                            'width': '80px',
-                                            'margin-left': '-40px',
-                                            'margin-top': '5px',
-                                            'left': '50%'})
+
+    // Adds a hideable toolbar to the top of the page, which includes task text
+    // and an 'End Study' button that sends the user to the return url.
+    function setupToolbar() {
+        var toolbarHeight = '50px';
+        var button = $wlux('<button>').css({'width': '100px'})
                                       .text(study_data.buttonText);
-        var link = $wlux('<a>').attr({'href': study_data.returnURL});
-        var div = $wlux('<div>').attr({'id': 'endButton'})
-                                .css({'position': 'fixed',
-                                      'background-color': 'red',
-                                      'right': '10px',
-                                      'top': '10px',
-                                      'width': '100px',
-                                      'height': '30px'});
+        var link = $wlux('<a>').attr({'href': study_data.returnURL})
+                               .css({'float': 'right'});
+        var toolbar = $wlux('<div>').attr({'id': 'wlux_toolbar'})
+                                    .css({'position': 'fixed',
+                                          'top': '0px',
+                                          'left': '0px',
+                                          'background-color': 'black',
+                                          'width': '100%',
+                                          'height': toolbarHeight});
+        var toggle = $wlux('<div>').attr({'id': 'wlux_toggle'})
+                                   .css({'position': 'fixed',
+                                         'top': toolbarHeight,
+                                         'left': '20px',
+                                         'color': 'white',
+                                         'font-size': '.8em',
+                                         'width': '50px',
+                                         'text-align': 'center',
+                                         'cursor': 'hand',
+                                         'cursor': 'pointer',
+                                         'padding': '.2em',
+                                         'background-color': 'black',
+                                         'border-top': '1px dashed white',
+                                         'border-radius': '0 0 .3em .3em'})
+                                   .text('hide');
+        var taskText = $wlux('<p>').text('Task: ' + study_data.taskText)
+                                   .css({'float': 'left',
+                                         'color': 'white',
+                                         'margin': '0'});
+
+        // animate the toolbar
+        toggle.click(function() {
+            var hidden = toolbar.hasClass('hidden');
+            if (hidden) { // show the toolbar
+                toolbar.animate({top: '0px'});
+                toggle.animate({top: toolbarHeight});
+                toggle.text('hide');
+                toolbar.removeClass('hidden');
+            } else { // hide the toolbar
+                toolbar.animate({top: '-' + toolbarHeight});
+                toggle.animate({top: '0px'});
+                toggle.text('show');
+                toolbar.addClass('hidden');
+            }
+        });
+
+        // layout the toolbar
         link.append(button);
-        div.append(link);
-        $wlux('body').append(div);
+        toolbar.append(taskText);
+        toolbar.append(link);
+        $wlux('body').append(toolbar);
+        $wlux('body').append(toggle);
+
+        // adds some margin to the direct children of the toolbar
+        $wlux("#wlux_toolbar > *").css("margin",".3em");
+
+        // automatically hide the toolbar after 2 seconds, so the user doesn't need to
+        // do it manually on every page load
+        setTimeout(function() { toggle.trigger('click'); }, 2000);
     }
 
     // Currently only handles page transitions caused by clicking anchor tags.
@@ -202,7 +246,7 @@ var WLUX = (function() {
 
                 logOpen();
                 loadCSS();
-                setupReturnButton();
+                setupToolbar();
                 updateLinks();
                 addClickHandlers();
 
