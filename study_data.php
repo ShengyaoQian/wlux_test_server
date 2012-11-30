@@ -4,7 +4,7 @@
     // NOTE: this assumes that the site and server directories are in the root
     // of the site only when developing on localhost
     $LOCAL = is_dir("../site");
-    $returnURL = "http://staff.washington.edu/rbwatson/study_data.php";
+    $returnURL = "http://staff.washington.edu/rbwatson/end.php";
     if ($LOCAL) {
         $returnURL = "/server/end.php";
     }
@@ -43,6 +43,12 @@
         header('content-type: application/json');
         echo $jsonpTag . '(' . json_encode($data) . ')';
     } else {
-        http_response_code(500);
+		// this line only works on PHP > 5.4.0, which not everyone seems to have.
+        //   http_response_code(500);
+		// this works on PHP > 4.3 (or so)
+		if (!headers_sent()) {
+			header('X-PHP-Response-Code: 500', true, 500);
+		}
+		// else too late to send a header with an error code
 	}
 ?>
