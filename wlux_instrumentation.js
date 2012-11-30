@@ -6,6 +6,10 @@
 // The code below assumes the first page is passed a query string
 // parameter containing the session id, which it uses to query the
 // server for additional info, and then passes along to subsequent pages.
+// TODO: upon opening, the page checks for a wlux_session query string
+// parameter. If found, it makes it a cookie and immediately redirects
+// the page so the param is no longer part of the url. If not found, it
+// checks for the cookie.
 
 // avoid conflicting with jQuery on the study site (rename $ to $wlux)
 $wlux = jQuery.noConflict();
@@ -16,28 +20,33 @@ $wlux = jQuery.noConflict();
 // publicly available.
 var WLUX = (function() {
 
+    /***************************************************************
+     *             Variables global to the module                  *
+     **************************************************************/
+
     var sessIdKey = "wlux_session";
     var condIdKey = "wlux_condition";
+    var SESSION_ID = null;
+    var done = false; // are we done loading wlux?
+    var study_data = {};
 
-	//*** DEBUG CODE ****
-    // are we testing locally?
+    // set the url dynamically depending on whether we're in the
+    // development environment or the production environment
     var host = window.location.host;
-    var DEBUG = (host.indexOf("localhost") != -1) ||
+    var LOCAL = (host.indexOf("localhost") != -1) ||
                 (host.indexOf("127.0.0.1") != -1);
-	//*** DEBUG CODE ****
 
     var loggerURL = "http://staff.washington.edu/rbwatson/logger.php";
     var studyDataURL = "http://staff.washington.edu/rbwatson/study_data.php";
-	//*** DEBUG CODE ****
-    if (DEBUG) {
+
+    if (LOCAL) {
         loggerURL = "/server/logger.php";
         studyDataURL = "/server/study_data.php";
     }
-	//*** DEBUG CODE ****
 
-	// session id passed in if this is page was opened as part of a survey
-    var SESSION_ID = null;
-    var done = false; // are we done loading wlux?
+    /***************************************************************
+     *                   Function Definitions                      *
+     **************************************************************/
 
     // gets a querystring parameter using its key
     // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values
@@ -48,7 +57,7 @@ var WLUX = (function() {
     }
 
     // appends the session id and condition id to all links on a page
-    function updateLinks(condId) {
+    function updateLinks() {
         $wlux("a").attr('href', function(i, val) {
             if (typeof(val) == 'undefined')
                 return; // element has no href, no change
@@ -68,161 +77,206 @@ var WLUX = (function() {
 
             // are we starting a new query string or appending to one?
             var start = (val.indexOf('?') == -1) ? '?' : '&';
-            var strArray = [val, start, sessIdKey, '=', SESSION_ID,
-                            '&', condIdKey, '=', condId, frag];
+            var strArray = [val, start, sessIdKey, '=', SESSION_ID, frag];
 
             return strArray.join('');
         });
     }
 
-    // logs page transitions
-    function logTransition(from, to, conditionId) {
-        $wlux.post(loggerURL, {"type": "transition",
-                               "wlux_session": SESSION_ID,
-                               "wlux_condition": conditionId,
-                               "from": from,
-                               "to": to});
+    // logs page transitions.
+    function logTransition(from, to) {
+        // $.post is asynchronous by default, which causes problems if the
+        // browser decides to follow the link before carrying out our request
+        $wlux.ajaxSetup({async: false}); //
+        $wlux.post(loggerURL, {"data" : {"type": "transition",
+                                         "wlux_session": SESSION_ID,
+                                         "from": from,
+                                         "to": to }
+                              }
+                  );
     }
 
-    // loads styles from the css file at the given url
-    function loadCSS(cssURL) {
+    // logs page openings
+    function logOpen() {
+        $wlux.ajaxSetup({async: false}); // do this immediately
+        $wlux.post(loggerURL, {"data" : {"type": "open",
+                                         "wlux_session": SESSION_ID,
+                                         "location": window.location.href}
+                              }
+                  );
+    }
+
+    // loads styles from the css file at the url supplied to
+    // us with the study data
+    function loadCSS() {
         // IE requires us to call this ie-only function
         if (document.createStyleSheet) {
-            document.createStyleSheet(cssURL);
+            document.createStyleSheet(study_data.cssURL);
         } else {
             var css = $wlux('<link>').attr({'rel': 'stylesheet',
                                             'type': 'text/css',
-                                            'href': cssURL});
+                                            'href': study_data.cssURL});
             $wlux('head').append(css);
         }
     }
 
-    //adds a fixed-position "end" button to page
-    function setupReturnButton(text, url) {
-        var button = $wlux('<button>').attr({'type': 'button'})
-                                      .css({'position': 'relative',
-                                            'width': '80px',
-                                            'margin-left': '-40px',
-                                            'margin-top': '5px',
-                                            'left': '50%'})
-                                      .text(text);
-        var link = $wlux('<a>').attr({'href': url});
-        var div = $wlux('<div>').attr({'id': 'endButton'})
-                                .css({'position': 'fixed',
-                                      'background-color': 'red',
-                                      'right': '10px',
-                                      'top': '10px',
-                                      'width': '100px',
-                                      'height': '30px'});
+
+    // Adds a hideable toolbar to the top of the page, which includes task text
+    // and an 'End Study' button that sends the user to the return url.
+    function setupToolbar() {
+        var toolbarHeight = '50px';
+        var button = $wlux('<button>').css({'width': '100px'})
+                                      .text(study_data.buttonText);
+        var link = $wlux('<a>').attr({'href': study_data.returnURL})
+                               .css({'float': 'right'});
+        var toolbar = $wlux('<div>').attr({'id': 'wlux_toolbar'})
+                                    .css({'position': 'fixed',
+                                          'top': '0px',
+                                          'left': '0px',
+                                          'background-color': 'black',
+                                          'width': '100%',
+                                          'height': toolbarHeight});
+        var toggle = $wlux('<div>').attr({'id': 'wlux_toggle'})
+                                   .css({'position': 'fixed',
+                                         'top': toolbarHeight,
+                                         'left': '20px',
+                                         'color': 'white',
+                                         'font-size': '.8em',
+                                         'width': '50px',
+                                         'text-align': 'center',
+                                         'cursor': 'hand',
+                                         'cursor': 'pointer',
+                                         'padding': '.2em',
+                                         'background-color': 'black',
+                                         'border-top': '1px dashed white',
+                                         'border-radius': '0 0 .3em .3em'})
+                                   .text('hide');
+        var taskText = $wlux('<p>').text('Task: ' + study_data.taskText)
+                                   .css({'float': 'left',
+                                         'color': 'white',
+                                         'margin': '0'});
+
+        // animate the toolbar
+        toggle.click(function() {
+            var hidden = toolbar.hasClass('hidden');
+            if (hidden) { // show the toolbar
+                toolbar.animate({top: '0px'});
+                toggle.animate({top: toolbarHeight});
+                toggle.text('hide');
+                toolbar.removeClass('hidden');
+            } else { // hide the toolbar
+                toolbar.animate({top: '-' + toolbarHeight});
+                toggle.animate({top: '0px'});
+                toggle.text('show');
+                toolbar.addClass('hidden');
+            }
+        });
+
+        // layout the toolbar
         link.append(button);
-        div.append(link);
-        $wlux('body').append(div);
+        toolbar.append(taskText);
+        toolbar.append(link);
+        $wlux('body').append(toolbar);
+        $wlux('body').append(toggle);
+
+        // adds some margin to the direct children of the toolbar
+        $wlux("#wlux_toolbar > *").css("margin",".3em");
+
+        // automatically hide the toolbar after 2 seconds, so the user doesn't need to
+        // do it manually on every page load
+        setTimeout(function() { toggle.trigger('click'); }, 2000);
     }
 
-
-    // instead of disabling, enabling clicks (which would require
-    // waiting for the page to load), we just hide the body as soon
-    // as it loads, and show it again later, in the start function
-    var timeout;
-    function hideBody() {
-        var body = $wlux('body');
-        if (done) {
-            // finished loading even before this method was called
-            // clear the timeout and don't hide the body, we're DONE
-            clearTimeout(timeout);
-            return;
-        }
-        if (body.length > 0) {
-            body.css({'visibility': 'hidden'});
-            clearTimeout(timeout);
-        }
+    // Currently only handles page transitions caused by clicking anchor tags.
+    function addClickHandlers() {
+        // Log transitions via anchor tags.
+        $wlux("a").click(function(e) {
+            var from = window.location.href;
+            // currentTarget is necessary for clicking of buttons wrapped in an a tag
+            var to = e.target.href || e.currentTarget.href;
+            logTransition(from, to);
+        });
     }
+
+    /***************************************************************
+     *                 Functions Called Externally                 *
+     **************************************************************/
 
     // This function will be called immediately, when this script is
-    // being parsed (i.e. crucially, before the body loads)
+    // being parsed (i.e. crucially, before the body loads).
+    // Instead of disabling, enabling clicks (which would require
+    // waiting for the page to load), we just hide the body as soon
+    // as it loads, and show it again later, in the start function
+    var interval;
     function preLoad() {
-		// Get the session ID from the query string
-		// If there is no session ID, then this page is not part of a study, so exit
+        // try to find/hide body as the page loads, to keep users from interacting
+        // with the page until all of our instrumentation is setup
+        interval = setInterval(function() {
+            var body = $wlux('body');
+            if (done) { // set in ajax success callback after study data is loaded
+                // the page loaded really fast - even before this method was called
+                // clear the timeout and don't hide the body, we're DONE
+                clearInterval(interval);
+                return;
+            }
+            if (body.length > 0) {
+                body.css({'visibility': 'hidden'});
+                clearInterval(interval);
+            }
+        }, 50); // try every 50ms
+    }
+
+    // This function will be called on dom ready.
+    // SESSION_ID and study_data should have already been set in preLoad()
+    function start() {
         SESSION_ID = getQsParam(sessIdKey);
         if (SESSION_ID === null)
             return;
-		
-		// build the script name string to include the session ID so we can
-		// query the WebLabUX server for more information about this session
-		var scriptString = studyDataURL + '?tag=server_vars&wlux_session=' + SESSION_ID;
-		// add the new script element to the head tag
-   		var headTag = document.getElementsByTagName('head')[0];
-   		var script= document.createElement('script');
-   		script.type= 'text/javascript';
-   		script.src= scriptString;
-   		headTag.appendChild(script);	
-		
-		// set the timeout to show the page body
-        timeout = setTimeout(hideBody, 50);
-    }
 
-    // calls all the methods that require study data
-    function loadStudyData(data) {
-        if (data === {}) {
-            // error getting study data, just display the body and return
-            $wlux('body').css({'visibility': 'visible'});
-            done = true;
-            return;
-        }
+        // request the study data from the server asynchronously
+        // (via JSONP to avoid the browser's same origin policy) while we're
+        // waiting for the page to load
+        $wlux.ajax({
+            url: studyDataURL,
+            type: "GET",
+            dataType: "jsonp",
+            data: {"wlux_session": SESSION_ID},
+            success: function(data) {
+                study_data = data; // just store it locally for later use
 
-        loadCSS(data.cssURL);
-        setupReturnButton(data.buttonText, data.returnURL);
-        updateLinks(data.conditionId);
+                logOpen();
+                loadCSS();
+                setupToolbar();
+                updateLinks();
+                addClickHandlers();
 
-        // log the page open event immediately
-        $wlux.post(loggerURL, {"type": "open",
-                               "wlux_session": SESSION_ID,
-                               "wlux_condition": data.conditionId,
-                               "location": window.location.href});
-
-        // Log transitions
-        // Note: this only handles page transitions caused by clicking
-        // anchor tags.
-        $wlux("a").click(function(e) {
-            var from = window.location.href;
-            var to = e.target.href;
-            logTransition(from, to, data.conditionId);
+                // everything is loaded and setup. show the body
+                $wlux('body').css({'visibility': 'visible'});
+                done = true;
+            },
+            error: function() {
+                // error getting study data, ensure body is visible and return
+                $wlux('body').css({'visibility': 'visible'});
+                done = true;
+                return;
+            },
+            cache: true // cache the results, in case subsequent pages make the same request
         });
+    }
 
-        // everything is loaded and setup. show the body
-        $wlux('body').css({'visibility': 'visible'});
-        done = true;
-    }
-	
-    // This function will be called on dom ready.
-    function start(data) {		
-		// continue processing after the script has loaded
-        loadStudyData(data);
-    }
-		
-    // Here we add the functions and variables we wish to export to
-    // the WLUX object
+    // Module pattern - functions and variables added to exports object
+    // will become parte of the WLUX object, everything else is private
     var exports = {};
     exports.preLoad = preLoad;
     exports.start = start;
-	
+
     return exports;
 })(); // module pattern - we've created an anonymous function and immediately call it
 
-// hide the body & load variables
+// use for initial set up, currently just hides the body
 WLUX.preLoad();
 
 // do wlux stuff as soon as the dom is ready
 $wlux(document).ready(function() {
-	// the server_vars object is defined in the script that is 
-	// was added to the head tag.
-	// If data is not defined, then either this page 
-	// wasn't loaded as part of a study, or there was a problem 
-	// getting information from the server.
-	server_vars = function(data) {
-		if (data !== undefined) {
-			WLUX.start(data);
-		}
-	}	
+    WLUX.start();
 });
-
