@@ -88,10 +88,16 @@ var WLUX = (function() {
         // $.post is asynchronous by default, which causes problems if the
         // browser decides to follow the link before carrying out our request
         $wlux.ajaxSetup({async: false}); //
+        
+        //obtain anchor link 'class' and 'id' attributes to log
+        var a_class = $wlux("a").attr('class');
+        var a_id = $wlux("a").attr('id');
         $wlux.post(loggerURL, {"data" : {"type": "transition",
                                          "wlux_session": SESSION_ID,
                                          "from": from,
-                                         "to": to }
+                                         "to": to,
+                                         "a_class": a_class,
+                                         "a_id": a_id}
                               }
                   );
     }
@@ -99,9 +105,15 @@ var WLUX = (function() {
     // logs page openings
     function logOpen() {
         $wlux.ajaxSetup({async: false}); // do this immediately
+        
+        //obtain anchor link 'class' and 'id' attributes to log
+        var a_class = $wlux("a").attr('class');
+        var a_id = $wlux("a").attr('id');
         $wlux.post(loggerURL, {"data" : {"type": "open",
                                          "wlux_session": SESSION_ID,
-                                         "location": window.location.href}
+                                         "location": window.location.href,
+                                         "a_class": a_class,
+                                         "a_id": a_id}
                               }
                   );
     }
