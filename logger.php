@@ -1,5 +1,5 @@
 <?php
-
+include 'config_files.php';
 // Logs page transitions on a weblabux study site.
 
 // In the final implementation, this will obviously write data to
@@ -14,7 +14,7 @@ $session = $json["wlux_session"];
 
 // get the condition from the sessions.txt (eventually get it from a db given
 // the session id)
-$file = fopen("sessions.txt","r");
+$file = fopen($sessionDataFile,"r");
 while(! feof($file)) {
     $line = fgets($file);
     $line = explode(' ', $line);
@@ -31,8 +31,8 @@ if ($condition != -1 && !empty($session) && !empty($json)) {
     }
     $data = $data . "\n";
 
-    $file = "session" . $session . ".txt";
-    $fileResult = file_put_contents("study_results/" . $file, $data, FILE_APPEND);
+    $file = $sessionLogFolder . "session" . $session . ".txt";
+    $fileResult = file_put_contents($file, $data, FILE_APPEND);
 }
 
 // otherwise we got an invalid request - just don't write anything to the file

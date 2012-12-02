@@ -93,6 +93,7 @@ var WLUX = (function() {
         a_class = a_class || "";
         $wlux.post(loggerURL, {"data" : {"type": "transition",
                                          "wlux_session": SESSION_ID,
+										 "conditionId" : study_data.conditionId,
                                          "from": from,
                                          "to": to,
                                          "a_class": a_class,
@@ -106,6 +107,7 @@ var WLUX = (function() {
         $wlux.ajaxSetup({async: false}); // do this immediately
         $wlux.post(loggerURL, {"data" : {"type": "open",
                                          "wlux_session": SESSION_ID,
+										 "conditionId" : study_data.conditionId,
                                          "location": window.location.href}
                               }
                   );

@@ -1,10 +1,11 @@
 <?php
+	include 'config_files.php';
     $DEBUG = is_dir("../site");
     $site_url = "http://students.washington.edu/rbwatson/hearts.html";
     if ($DEBUG) {
         $site_url = "/site/hearts.html";
     }
-    $filename = "sessions.txt";
+    $filename = $sessionDataFile;
 
     //first, obtain the data initially present in the text file
     $ini_handle = fopen($filename, "r");
