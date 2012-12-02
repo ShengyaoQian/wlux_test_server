@@ -84,14 +84,13 @@ var WLUX = (function() {
     }
 
     // logs page transitions.
-    function logTransition(from, to) {
+    function logTransition(from, to, a_id, a_class) {
         // $.post is asynchronous by default, which causes problems if the
         // browser decides to follow the link before carrying out our request
         $wlux.ajaxSetup({async: false}); //
-        
-        //obtain anchor link 'class' and 'id' attributes to log
-        var a_class = $wlux("a").attr('class');
-        var a_id = $wlux("a").attr('id');
+        // if undefined, use ""
+        a_id = a_id || "";
+        a_class = a_class || "";
         $wlux.post(loggerURL, {"data" : {"type": "transition",
                                          "wlux_session": SESSION_ID,
                                          "from": from,
@@ -105,15 +104,9 @@ var WLUX = (function() {
     // logs page openings
     function logOpen() {
         $wlux.ajaxSetup({async: false}); // do this immediately
-        
-        //obtain anchor link 'class' and 'id' attributes to log
-        var a_class = $wlux("a").attr('class');
-        var a_id = $wlux("a").attr('id');
         $wlux.post(loggerURL, {"data" : {"type": "open",
                                          "wlux_session": SESSION_ID,
-                                         "location": window.location.href,
-                                         "a_class": a_class,
-                                         "a_id": a_id}
+                                         "location": window.location.href}
                               }
                   );
     }
@@ -206,7 +199,9 @@ var WLUX = (function() {
             var from = window.location.href;
             // currentTarget is necessary for clicking of buttons wrapped in an a tag
             var to = e.target.href || e.currentTarget.href;
-            logTransition(from, to);
+            var a_id = $wlux(this).attr('id');
+            var a_class = $wlux(this).attr('class');
+            logTransition(from, to, a_id, a_class);
         });
     }
 

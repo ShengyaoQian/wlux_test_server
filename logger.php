@@ -25,9 +25,7 @@ while(! feof($file)) {
 fclose($file);
 
 if ($condition != -1 && !empty($session) && !empty($json)) {
-    // rbwatson - added time stamp to log entry
     $data = "log_entry_time:\t".date('c')."\n";
-    // TODO: ajay- make this pretty
     while (list($key, $value) = each($json)) {
         $data = $data . "\t". $key . ":\t" . $value . "\n";
     }

@@ -7,6 +7,9 @@ compiler (compiler.jar), via the following command:
 This also combines jquery and wlux_instrumentation into a single file. Now test sites need 
 only include a single script, `wlux_instrumentation.min.js`.
 
+To avoid having to copy/paste or memorize this command, there are two scripts `compile.sh` and
+`compile.bat` which will run the minification command on linux and windows, respectively.
+
 ##Server status
 The http://staff.washington.edu/rbwatson server has been updated to this repo as  of 11/22/2012 @ 10:00.
 
