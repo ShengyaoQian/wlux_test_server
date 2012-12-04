@@ -5,8 +5,8 @@
 
 // The code below assumes the first page is passed a query string
 // parameter containing the session id, which it uses to query the
-// server for additional info, and then passes along to subsequent pages.
-// TODO: upon opening, the page checks for a wlux_session query string
+// server for additional info.
+// Upon opening, the page checks for a wlux_session query string
 // parameter. If found, it makes it a cookie and immediately redirects
 // the page so the param is no longer part of the url. If not found, it
 // checks for the cookie.
@@ -56,33 +56,6 @@ var WLUX = (function() {
         return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
     }
 
-    // appends the session id and condition id to all links on a page
-    function updateLinks() {
-        $wlux("a").attr('href', function(i, val) {
-            if (typeof(val) == 'undefined')
-                return; // element has no href, no change
-
-            // check whether it contains a fragment. Fragments must
-            // be moved to the end of the url to function properly
-            frag = '';
-            var ndx = val.indexOf('#');
-            if (ndx != -1) {
-                if (ndx === 0) // contains only a fragment, don't modify
-                    return val;
-
-                // extract the fragment and we'll append it later
-                val = val.substr(0, ndx);
-                frag = val.substr(ndx);
-            }
-
-            // are we starting a new query string or appending to one?
-            var start = (val.indexOf('?') == -1) ? '?' : '&';
-            var strArray = [val, start, sessIdKey, '=', SESSION_ID, frag];
-
-            return strArray.join('');
-        });
-    }
-
     // logs page transitions.
     function logTransition(from, to, a_id, a_class) {
         // $.post is asynchronous by default, which causes problems if the
@@ -93,7 +66,7 @@ var WLUX = (function() {
         a_class = a_class || "";
         $wlux.post(loggerURL, {"data" : {"type": "transition",
                                          "wlux_session": SESSION_ID,
-										 "conditionId" : study_data.conditionId,
+                                         "conditionId" : study_data.conditionId,
                                          "from": from,
                                          "to": to,
                                          "a_class": a_class,
@@ -107,7 +80,7 @@ var WLUX = (function() {
         $wlux.ajaxSetup({async: false}); // do this immediately
         $wlux.post(loggerURL, {"data" : {"type": "open",
                                          "wlux_session": SESSION_ID,
-										 "conditionId" : study_data.conditionId,
+                                         "conditionId" : study_data.conditionId,
                                          "location": window.location.href}
                               }
                   );
@@ -134,7 +107,8 @@ var WLUX = (function() {
         var toolbarHeight = '50px';
         var button = $wlux('<button>').css({'width': '100px'})
                                       .text(study_data.buttonText);
-        var link = $wlux('<a>').attr({'href': study_data.returnURL})
+        // Appending session id will not be necessary when server stores its own cookie/session
+        var link = $wlux('<a>').attr({'href': study_data.returnURL + "?wlux_session=" + SESSION_ID})
                                .css({'float': 'right'});
         var toolbar = $wlux('<div>').attr({'id': 'wlux_toolbar'})
                                     .css({'position': 'fixed',
@@ -207,6 +181,47 @@ var WLUX = (function() {
         });
     }
 
+    // Returns the value of the given cookie if the user has it
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+    // Removes the given parameter from the URL, preserving other parameters and hash
+    function removeQsParam(key, url) {
+        var re = new RegExp("&" + key + "(=[^&]*)?|^" + key + "(=[^&]*)?&?");
+
+        // grab the query string if it exists
+        var qsIndex = url.indexOf('?');
+        if (qsIndex != -1) {
+            var baseURL = url.substr(0, qsIndex);
+            var qs = url.substr(qsIndex+1);
+        }
+
+        // grab the fragment if it exists
+        var hashIndex = qs.indexOf('#');
+        if (hashIndex != -1) {
+            var fragment = qs.substr(hashIndex);
+            qs = qs.substr(0, hashIndex);
+        }
+
+        var newQs = qs.replace(re, "");
+
+        var newURL = baseURL;
+        if (newQs)
+            newURL += "?" + newQs;
+        if (fragment)
+            newURL += fragment;
+
+        return newURL;
+    }
+
     /***************************************************************
      *                 Functions Called Externally                 *
      **************************************************************/
@@ -238,7 +253,14 @@ var WLUX = (function() {
     // This function will be called on dom ready.
     // SESSION_ID and study_data should have already been set in preLoad()
     function start() {
-        SESSION_ID = getQsParam(sessIdKey);
+        var sessionId = getQsParam(sessIdKey);
+        // Store a cookie if session parameter was passed, cookie expires after browser is closed
+        if (sessionId !== null) {
+            document.cookie = "wluxSessionCookie="+sessionId+"; path=/";
+            window.location.replace(removeQsParam("wlux_session", document.URL));
+        }
+
+        SESSION_ID = readCookie("wluxSessionCookie");
         if (SESSION_ID === null)
             return;
 
@@ -256,7 +278,6 @@ var WLUX = (function() {
                 logOpen();
                 loadCSS();
                 setupToolbar();
-                updateLinks();
                 addClickHandlers();
 
                 // everything is loaded and setup. show the body
