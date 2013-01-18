@@ -4,7 +4,7 @@
     // development or produciton environment.
     // NOTE: this assumes that the site and server directories are in the root
     // of the site only when developing on localhost
-    $LOCAL = is_dir("../site");
+    $LOCAL = is_dir("../wlux_test_site");
     $returnURL = "http://staff.washington.edu/rbwatson/end.php";
     if ($LOCAL) {
         $returnURL = "/server/end.php";

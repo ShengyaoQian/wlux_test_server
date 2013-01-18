@@ -1,6 +1,6 @@
 <?php
 	include 'config_files.php';
-    $DEBUG = is_dir("../site");
+    $DEBUG = is_dir("../wlux_test_site");
     $site_url = "http://students.washington.edu/rbwatson/hearts.html";
     if ($DEBUG) {
         $site_url = "/site/hearts.html";
