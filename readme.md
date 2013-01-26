@@ -1,3 +1,12 @@
+##Server status
+The http://staff.washington.edu/rbwatson server has been updated to this repo as  of 1/26/2013 @ 14:39.
+
+The wlux_test_server code runs on http://staff.washington.edu/rbwatson and is used to test server-side code while we're experimenting with WebLabUX utilities and "plumbing." I'll make sure that what is in the master repo is also on the server.
+
+To run the demo, go to http://staff.washington.edu/rbwatson/start.php 
+
+##Release notes
+**THIS BUILD IS NOT READY FOR RELEASE -- IT IS FOR TESTING/DEMO ONLY **
 When ready for production, the javascript needs to be compiled / minified so that it
 will download and run faster on client sites. This can be done using the google closure 
 compiler (compiler.jar), via the following command:
@@ -10,17 +19,3 @@ only include a single script, `wlux_instrumentation.min.js`.
 To avoid having to copy/paste or memorize this command, there are two scripts `compile.sh` and
 `compile.bat` which will run the minification command on linux and windows, respectively.
 
-##Server status
-The http://staff.washington.edu/rbwatson server has been updated to this repo as  of 11/22/2012 @ 10:00.
-
-The wlux_test_server code runs on http://staff.washington.edu/rbwatson and is used to test server-side code while we're experimenting with WebLabUX utilities and "plumbing." I'll make sure that what is in the master repo is also on the server.
-
-The files that are on the server are currently:
-
-ping.php:
-the server-side file that returns a json object. Eventually, something like this could be used to communicate between the WebLabUX server and the website under test. At the moment, it returns a single key/value pair. (imaginatively named "key", returning "value") It accepts a query string, "jsonp" which is used to provide the jsonp "padding" for the data object.
-
-You can see what this looks like by opening this link: http://staff.washington.edu/rbwatson/ping.php?jsonp=myMethod
-
-phpinfo.php:
-Displays the PHP configuration of the server.
