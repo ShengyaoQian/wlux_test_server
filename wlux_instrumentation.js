@@ -106,11 +106,9 @@ var WLUX = (function() {
     }
 
 
-    // Adds a hideable toolbar to the top of the page, which includes task text
+    // Adds a hideable taskbar to the top of the page, which includes task text
     // and an 'End Study' button that sends the user to the return url.
-    function setupToolbar() {
-        var toolbarHeight = '50px';
-		
+    function setupTaskbar() {		
         var button = $wlux('<button>').attr({'class': 'wlux_button'})
                                       .text(study_data.buttonText);
         // Appending session id will not be necessary when server stores its own cookie/session
@@ -120,47 +118,53 @@ var WLUX = (function() {
 		var buttonDiv = $wlux('<div>').attr({'id': 'wlux_return',
 											 'class': 'wlux_button_div'});
 										  
-        var toolbar = $wlux('<div>').attr({'id': 'wlux_toolbar',
+        var taskbar = $wlux('<div>').attr({'id': 'wlux_taskbar',
 										   'class': 'wlux_taskbar'});
 										   
         var toggle = $wlux('<div>').attr({'id': 'wlux_toggle',
 										  'class': 'wlux_tab'})
-                                   .css({'top': toolbarHeight})
-                                   .text('hide');
+                                   .text(study_data.tabHideText);
 								   
-        var taskText = $wlux('<p>').attr({'class': 'wlux_taskbar_text'})
-									.text('Task: ' + study_data.taskText);
-
-        // animate the toolbar
+		if (undefined === study_data.taskHTML) {							   
+			var taskText = $wlux('<p>').attr({'class': 'wlux_taskbar_text'})
+										.text(study_data.taskText);
+		} else {
+			var taskText = study_data.taskHTML;
+		}
+        // animate the taskbar
         toggle.click(function() {
-            var hidden = toolbar.hasClass('hidden');
-            if (hidden) { // show the toolbar
-                toolbar.animate({top: '0px'});
-                toggle.animate({top: toolbarHeight});
-                toggle.text('hide');
-                toolbar.removeClass('hidden');
-            } else { // hide the toolbar
-                toolbar.animate({top: '-' + toolbarHeight});
+			// getting the taskbar element dynamically at run-time
+			// so the taskbar can be configured in the .css file
+			var localTaskbar = $wlux('#wlux_taskbar');
+			var localTaskbarHeight = localTaskbar[0].clientHeight;
+            var hidden = localTaskbar[0].offsetTop >= 0 ? false : true;
+            if (hidden) { // show the taskbar
+                localTaskbar.animate({top: '0px'});
+                toggle.animate({top: localTaskbarHeight});
+                toggle.text(study_data.tabHideText);
+                localTaskbar.removeClass('hidden');
+            } else { // hide the taskbar
+                localTaskbar.animate({top: '-' + localTaskbarHeight});
                 toggle.animate({top: '0px'});
-                toggle.text('show');
-                toolbar.addClass('hidden');
+                toggle.text(study_data.tabShowText);
+                localTaskbar.addClass('hidden');
             }
         });
 
-        // layout the toolbar
-        toolbar.append(taskText);
-        // toolbar.append(link);
-        $wlux('body').append(toolbar);
+        // layout the taskbar
+        taskbar.append(taskText);
+        // taskbar.append(link);
+        $wlux('body').append(taskbar);
         $wlux('body').append(toggle);
 		// new to add button to frame, not hideable task info bar
         link.append(button);
 		buttonDiv.append(link);
 		$wlux('body').append(buttonDiv);
 
-        // adds some margin to the direct children of the toolbar
-        $wlux("#wlux_toolbar > *").css("margin",".3em");
+        // adds some margin to the direct children of the taskbar
+        $wlux("#wlux_taskbar > *").css("margin",".3em");
 
-        // automatically hide the toolbar after 2 seconds, so the user doesn't need to
+        // automatically hide the taskbar after 2 seconds, so the user doesn't need to
         // do it manually on every page load
 		// ** per design review: we want the user to hide it manually.
         // setTimeout(function() { toggle.trigger('click'); }, 2000);
@@ -275,7 +279,7 @@ var WLUX = (function() {
 
                 logOpen();
                 loadCSS();
-                setupToolbar();
+                setupTaskbar();
                 addClickHandlers();
 
                 // everything is loaded and setup. show the body
