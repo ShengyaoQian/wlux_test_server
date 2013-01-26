@@ -35,12 +35,13 @@
                       "cssURL" => $cssURL,
 					  "taskBarCSS" => $taskBarCSS,
                       "buttonText" => "End study",
-					  "buttonStyle" => "",
                       "returnURL" => $returnURL,
-                      "taskText" => "Learn to play hearts and spades.",
-					  "taskStyle" => "",
-					  "tabText" => "show task|hide task",
-					  "tabStyle" => ""
+					  // taskHTML will override taskText if both are sent
+					  // but one or the other must be present 
+                      "taskText" => "Task: Learn to play hearts and spades to become a card shark.",
+					  "taskHTML" => "<p class='wlux_taskbar_text'><strong>Task 1:</strong> This is some <i>formatted</i> text</p>",
+					  "tabShowText" => "Show",
+					  "tabHideText" => "Hide",
 					  );
     } else {
         // this will trigger the jquery ajax call's error handling callback
