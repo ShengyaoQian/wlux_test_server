@@ -1,5 +1,5 @@
-study_results
-data_files
+study_results/
+data_files/
 
 #################
 ## Eclipse
