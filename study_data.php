@@ -5,10 +5,12 @@
     // NOTE: this assumes that the site and server directories are in the root
     // of the site only when developing on localhost
     $LOCAL = is_dir("../wlux_test_site");
-    $returnURL = "http://staff.washington.edu/rbwatson/end.php";
+	$serverRoot = "http://staff.washington.edu/rbwatson/";
     if ($LOCAL) {
-        $returnURL = "/server/end.php";
+		$serverRoot = "/server/";
     }
+    $returnURL = $serverRoot."end.php";
+	$taskBarCSS = $serverRoot."wluxTaskBar.css";
 
     $data = array();
     $condition = "";
@@ -31,9 +33,15 @@
     if ($condition != "" && $cssURL != "") {
         $data = array("conditionId" => $condition,
                       "cssURL" => $cssURL,
-                      "buttonText" => "End Study",
+					  "taskBarCSS" => $taskBarCSS,
+                      "buttonText" => "End study",
+					  "buttonStyle" => "",
                       "returnURL" => $returnURL,
-                      "taskText" => "Learn to play hearts and spades.");
+                      "taskText" => "Learn to play hearts and spades.",
+					  "taskStyle" => "",
+					  "tabText" => "show task|hide task",
+					  "tabStyle" => ""
+					  );
     } else {
         // this will trigger the jquery ajax call's error handling callback
         header("HTTP/1.1 404 Not Found");
