@@ -50,7 +50,7 @@
 
     <body>
         <div class="container">
-            <h2>WebLabUX Survey Consent Form </h2>
+            <h2>WebLabUX Survey Consent Form</h2>
 
             <p>Thank you for agreeing to participate in our survey.<br />
             Please click on continue to begin the survey</p>
