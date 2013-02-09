@@ -92,80 +92,80 @@ var WLUX = (function() {
         // IE requires us to call this ie-only function
         if (document.createStyleSheet) {
             document.createStyleSheet(study_data.cssURL);
+    		document.createStyleSheet(study_data.taskBarCSS);
         } else {
             var css = $wlux('<link>').attr({'rel': 'stylesheet',
                                             'type': 'text/css',
                                             'href': study_data.cssURL});
             $wlux('head').append(css);
+            css = $wlux('<link>').attr({'rel': 'stylesheet',
+                                            'type': 'text/css',
+                                            'href': study_data.taskBarCSS});
+            $wlux('head').append(css);
         }
     }
 
 
-    // Adds a hideable toolbar to the top of the page, which includes task text
+    // Adds a hideable taskbar to the top of the page, which includes task text
     // and an 'End Study' button that sends the user to the return url.
-    function setupToolbar() {
-        var toolbarHeight = '50px';
-        var button = $wlux('<button>').css({'width': '100px'})
+    function setupTaskbar() {		
+        var button = $wlux('<button>').attr({'class': 'wlux_button'})
                                       .text(study_data.buttonText);
         // Appending session id will not be necessary when server stores its own cookie/session
-        var link = $wlux('<a>').attr({'href': study_data.returnURL + "?wlux_session=" + SESSION_ID})
-                               .css({'float': 'right'});
-        var toolbar = $wlux('<div>').attr({'id': 'wlux_toolbar'})
-                                    .css({'position': 'fixed',
-                                          'top': '0px',
-                                          'left': '0px',
-                                          'background-color': 'black',
-                                          'width': '100%',
-                                          'height': toolbarHeight});
-        var toggle = $wlux('<div>').attr({'id': 'wlux_toggle'})
-                                   .css({'position': 'fixed',
-                                         'top': toolbarHeight,
-                                         'left': '20px',
-                                         'color': 'white',
-                                         'font-size': '.8em',
-                                         'width': '50px',
-                                         'text-align': 'center',
-                                         'cursor': 'hand',
-                                         'cursor': 'pointer',
-                                         'padding': '.2em',
-                                         'background-color': 'black',
-                                         'border-top': '1px dashed white',
-                                         'border-radius': '0 0 .3em .3em'})
-                                   .text('hide');
-        var taskText = $wlux('<p>').text('Task: ' + study_data.taskText)
-                                   .css({'float': 'left',
-                                         'color': 'white',
-                                         'margin': '0'});
-
-        // animate the toolbar
+        var link = $wlux('<a>').attr({'href': study_data.returnURL + "?wlux_session=" + SESSION_ID, 
+									  'class': 'wlux_button_link'});
+							   
+		var buttonDiv = $wlux('<div>').attr({'id': 'wlux_return',
+											 'class': 'wlux_button_div'});
+										  
+        var taskbar = $wlux('<div>').attr({'id': 'wlux_taskbar',
+										   'class': 'wlux_taskbar'});
+										   
+        var toggle = $wlux('<div>').attr({'id': 'wlux_toggle',
+										  'class': 'wlux_tab'})
+                                   .text(study_data.tabHideText);
+								   
+		if (undefined === study_data.taskHTML) {							   
+			var taskText = $wlux('<p>').attr({'class': 'wlux_taskbar_text'})
+										.text(study_data.taskText);
+		} else {
+			var taskText = study_data.taskHTML;
+		}
+        // animate the taskbar
         toggle.click(function() {
-            var hidden = toolbar.hasClass('hidden');
-            if (hidden) { // show the toolbar
-                toolbar.animate({top: '0px'});
-                toggle.animate({top: toolbarHeight});
-                toggle.text('hide');
-                toolbar.removeClass('hidden');
-            } else { // hide the toolbar
-                toolbar.animate({top: '-' + toolbarHeight});
-                toggle.animate({top: '0px'});
-                toggle.text('show');
-                toolbar.addClass('hidden');
-            }
+			// getting the taskbar element dynamically at run-time
+			// so the taskbar can be configured in the .css file
+			var localTaskbar = $wlux('#wlux_taskbar');
+			var localTaskbarHeight = localTaskbar[0].clientHeight;
+            var hidden = localTaskbar[0].offsetTop >= 0 ? false : true;
+            if (hidden) { // show the taskbar
+                localTaskbar.animate({top: '0px'});
+                // toggle.animate({top: localTaskbarHeight});
+                toggle.text(study_data.tabHideText);
+                localTaskbar.removeClass('hidden');
+            } else { // hide the taskbar
+                localTaskbar.animate({top: '-' + localTaskbarHeight});
+                toggle.text(study_data.tabShowText);
+                localTaskbar.addClass('hidden');
+            } 
         });
 
-        // layout the toolbar
+        // layout the taskbar
+        taskbar.append(taskText);
+        $wlux('body').append(taskbar);
+        taskbar.append(toggle);
+		// new to add button to frame, not hideable task info bar
         link.append(button);
-        toolbar.append(taskText);
-        toolbar.append(link);
-        $wlux('body').append(toolbar);
-        $wlux('body').append(toggle);
+		buttonDiv.append(link);
+		$wlux('body').append(buttonDiv);
 
-        // adds some margin to the direct children of the toolbar
-        $wlux("#wlux_toolbar > *").css("margin",".3em");
+        // adds some margin to the direct children of the taskbar
+        $wlux("#wlux_taskbar > *").css("margin",".3em");
 
-        // automatically hide the toolbar after 2 seconds, so the user doesn't need to
+        // automatically hide the taskbar after 2 seconds, so the user doesn't need to
         // do it manually on every page load
-        setTimeout(function() { toggle.trigger('click'); }, 2000);
+		// ** per design review: we want the user to hide it manually.
+        // setTimeout(function() { toggle.trigger('click'); }, 2000);
     }
 
     // Currently only handles page transitions caused by clicking anchor tags.
@@ -277,7 +277,7 @@ var WLUX = (function() {
 
                 logOpen();
                 loadCSS();
-                setupToolbar();
+                setupTaskbar();
                 addClickHandlers();
 
                 // everything is loaded and setup. show the body
