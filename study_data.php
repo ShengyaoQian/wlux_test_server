@@ -10,7 +10,7 @@
 		$serverRoot = "/server/";
     }
     $returnURL = $serverRoot."end.php";
-	$taskBarCSS = $serverRoot."newwluxTaskBar.css";
+	$taskBarCSS = $serverRoot."wluxTaskBar.css";
 
     $data = array();
     $condition = "";
