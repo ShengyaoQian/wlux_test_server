@@ -4,11 +4,13 @@
     // development or produciton environment.
     // NOTE: this assumes that the site and server directories are in the root
     // of the site only when developing on localhost
-    $LOCAL = is_dir("../site");
-    $returnURL = "http://staff.washington.edu/rbwatson/end.php";
+    $LOCAL = is_dir("../wlux_test_site");
+	$serverRoot = "http://staff.washington.edu/rbwatson/";
     if ($LOCAL) {
-        $returnURL = "/server/end.php";
+		$serverRoot = "/server/";
     }
+    $returnURL = $serverRoot."end.php";
+	$taskBarCSS = $serverRoot."newwluxTaskBar.css";
 
     $data = array();
     $condition = "";
@@ -31,9 +33,17 @@
     if ($condition != "" && $cssURL != "") {
         $data = array("conditionId" => $condition,
                       "cssURL" => $cssURL,
-                      "buttonText" => "End Study",
+					  "taskBarCSS" => $taskBarCSS,
+                      "buttonText" => "End study",
                       "returnURL" => $returnURL,
-                      "taskText" => "Learn to play hearts and spades.");
+					  // taskHTML will override taskText if both are sent
+					  // but one or the other must be present 
+                      "taskText" => "Task: Learn to play hearts and spades to become a card shark.",
+					  "taskHTML" => "<p class='wlux_taskbar_text'><strong>Task 1:</strong> This is some <i>formaaaaaaaaatted</i> reaaaaaaaaaaaaaaaaaaaaalllllly loooooooooooooooonnnnnngg teeeeeeeeeeeeeeeeeeeeeeeeextOne Hundred Years of Solitude (Spanish: Cien años de soledad, 1967), by Gabriel García Márquez, is a novel that tells the multi-generational story of the Buendía family, whose patriarch, José Arcadio Buendía, founds the town of Macondo, the metaphoric Colombia. The non-linear story is narrated via different time frames, a technique derived from the Argentine writer Jorge Luis Borges (as in The Garden of Forking Paths)[citation needed].
+The widely acclaimed book, considered by many to be the author's masterpiece, was first published in Spanish in 1967, and subsequently has been translated into thirty-seven languages and has sold more than 20 million copies.[1][2] The magical realist style and thematic substance of One Hundred Years of Solitude established it as an important, representative novel of the literary Latin American Boom of the 1960s and 1970s,[3] that was stylistically influenced by Modernism (European and North American), and the Cuban Vanguardia (Vanguard) literary movement.</p>",
+					  "tabShowText" => "Show",
+					  "tabHideText" => "Hide",
+					  );
     } else {
         // this will trigger the jquery ajax call's error handling callback
         header("HTTP/1.1 404 Not Found");
