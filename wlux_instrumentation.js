@@ -92,7 +92,7 @@ var WLUX = (function() {
         // IE requires us to call this ie-only function
         if (document.createStyleSheet) {
             document.createStyleSheet(study_data.cssURL);
-			document.createStyleSheet(study_data.taskBarCSS);
+    		document.createStyleSheet(study_data.taskBarCSS);
         } else {
             var css = $wlux('<link>').attr({'rel': 'stylesheet',
                                             'type': 'text/css',
@@ -140,22 +140,23 @@ var WLUX = (function() {
             var hidden = localTaskbar[0].offsetTop >= 0 ? false : true;
             if (hidden) { // show the taskbar
                 localTaskbar.animate({top: '0px'});
-                toggle.animate({top: localTaskbarHeight});
+                // toggle.animate({top: localTaskbarHeight});
                 toggle.text(study_data.tabHideText);
                 localTaskbar.removeClass('hidden');
             } else { // hide the taskbar
                 localTaskbar.animate({top: '-' + localTaskbarHeight});
-                toggle.animate({top: '0px'});
                 toggle.text(study_data.tabShowText);
                 localTaskbar.addClass('hidden');
-            }
+            } 
         });
 
         // layout the taskbar
         taskbar.append(taskText);
-        // taskbar.append(link);
         $wlux('body').append(taskbar);
-        $wlux('body').append(toggle);
+        taskbar.append(toggle);
+		// new to add button to frame, not hideable task info bar
+		buttonDiv.append(link);
+		$wlux('body').append(buttonDiv);
 		// new to add button to frame, not hideable task info bar
         link.append(button);
 		buttonDiv.append(link);
