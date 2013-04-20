@@ -43,7 +43,6 @@
 					  "tabShowText" => "Show",
 					  "tabHideText" => "Hide",
 					  );
-					  );
     } else {
         // this will trigger the jquery ajax call's error handling callback
         header("HTTP/1.1 404 Not Found");
