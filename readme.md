@@ -1,5 +1,5 @@
 ##Server status
-The http://staff.washington.edu/rbwatson server has been updated to this repo as  of 1/26/2013 @ 14:39.
+The http://staff.washington.edu/rbwatson server has been updated to this repo as  of 4/20/2013 @ 16:00pm.
 
 The wlux_test_server code runs on http://staff.washington.edu/rbwatson and is used to test server-side code while we're experimenting with WebLabUX utilities and "plumbing." I'll make sure that what is in the master repo is also on the server.
 
