@@ -37,6 +37,11 @@ is to allow this object to be updated as necessary so, confirm these fields with
 | *tabShowText* | Text to display in the show/hide task button when the task bar is hidden. |
 | *tabHideText* | Text to display in the show/hide task button when the taks bar is visible. |
 
+### Styles used by the taskBarCSS file
+The taskBarCSS file referenced in the study config data object uses the styles shown here to configure the task bar and  task/study end button.
+
+![Task bar .css styles](./TaskBarCSS.png)
+
 ## Data logger data object
 The logger data object is defined by the structure in WLUX_Instrumentation.js and has two flavors: **open** and **transition**.
 Because these structures are defined in the code, confirm the fields as they are defined in the POST request to logger.php.
@@ -50,4 +55,5 @@ Because these structures are defined in the code, confirm the fields as they are
 | *to* |  | X | The URL of the link target (destination) page. |
 | *type* | X | X | The type of record being sent: **transition** or **open** |
 | *wlux_session* | X | X | The session ID for the current session - received from WebLabUX in the study config data. |
+
 
