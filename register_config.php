@@ -40,8 +40,12 @@
 			mkdir($path);
 			umask($old_umask);
 		}
-		file_put_contents($path.$file_name, serialize($params));
-		$re_read_params = unserialize(file_get_contents($path.$file_name));
-		return $re_read_params;
+		if(is_dir($path)){
+			file_put_contents($path.$file_name, serialize($params));
+			$re_read_params = unserialize(file_get_contents($path.$file_name));
+			return $re_read_params;
+		}else{
+			return "The server was unable to create the folder. Please check if permissions are properly set up.";
+		}
 	}
 ?>
