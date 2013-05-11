@@ -5,8 +5,8 @@ include 'config_files.php';
 // In the final implementation, this will obviously write data to
 // a database instead of a text file.
 
-$type = $_POST["type"];  // the type of action we're logging
-$data_arr = array();
+//$type = $_POST["type"];  // the type of action we're logging
+//$data_arr = array();
 $condition = -1;
 
 $json = $_POST["data"];
@@ -33,6 +33,15 @@ if ($condition != -1 && !empty($session) && !empty($json)) {
 
     $file = $sessionLogFolder . "session" . $session . ".txt";
     $fileResult = file_put_contents($file, $data, FILE_APPEND);
+	// send success response
+	if (!headers_sent()) {
+		header('X-PHP-Response-Code: 200', true, 200);
+	}
+} else {
+	// send error response
+	if (!headers_sent()) {
+		header('X-PHP-Response-Code: 500', true, 500);
+	}
 }
 
 // otherwise we got an invalid request - just don't write anything to the file

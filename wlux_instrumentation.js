@@ -125,7 +125,7 @@ var WLUX = (function() {
 										  'class': 'wlux_tab'})
                                    .text(study_data.tabHideText);
 								   
-		if (undefined === study_data.taskHTML) {							   
+		if ((undefined === study_data.taskHTML) || (study_data.taskHTML.length == 0)) {
 			var taskText = $wlux('<p>').attr({'class': 'wlux_taskbar_text'})
 										.text(study_data.taskText);
 		} else {
