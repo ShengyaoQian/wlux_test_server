@@ -1,5 +1,6 @@
 <?php 
 //This file submits information to webservice to generate a study page
+	include 'config_files.php';
 ?>
 	<!doctype HTML>
 	<html>
@@ -13,7 +14,7 @@
 			<fieldset>
 			<?php 
 
-				$file = '../config_file/config.txt';
+				$file = $CONFIG_FILE_PATH.$CONFIG_FILE_NAME;
 				if (file_exists($file)) {
 					$defaults = unserialize(file_get_contents($file));
 				?>
@@ -46,6 +47,6 @@
 			
 			</fieldset>
 		</form>
-		<a href="../config_file/config.txt">Right click to download configuration</a>
+		<a href="<?php echo $CONFIG_FILE_PATH.$CONFIG_FILE_NAME?>">Right click to download configuration</a>
 	</body>
 	</html>
