@@ -1,4 +1,5 @@
 <?php
+	include 'config_files.php';
 	/*
 		This php file checks if the necessary parameters
 		are being passed and if every parameter is being
@@ -19,8 +20,6 @@
 	$PARAMETERS = array("conditionId","cssURL","taskBarCSS",
 						"buttonText","returnURL","taskText",
 						"taskHTML","tabShowText","tabHideText");
-	$CONFIG_FILE_PATH = "../config_file/";
-	$CONFIG_FILE_NAME = "config.txt";
 
 	$is_complete_request = true;
 	for($i=0; $i<count($PARAMETERS); $i++){
