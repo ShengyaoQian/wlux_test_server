@@ -191,7 +191,10 @@ var WLUX = (function() {
         for(var i=0;i < ca.length;i++) {
             var c = ca[i];
             while (c.charAt(0)==' ') c = c.substring(1,c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+			// sometimes ca has two entries: 1 with just the name and the other with
+			// the name and the value. Make sure that we're not just matching an entry
+			// that contains only the name.
+            if ((c.indexOf(nameEQ) == 0) && (c.length > nameEQ.length)) return c.substring(nameEQ.length,c.length);
         }
         return null;
     }

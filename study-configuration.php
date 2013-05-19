@@ -1,7 +1,8 @@
 <?php 
 //This file submits information to webservice to generate a study page
 error_reporting(E_STRICT);
-
+include 'config_files.php';
+error_reporting(E_STRICT);
 ?>
 	<html>
 	<head>
@@ -13,8 +14,7 @@ error_reporting(E_STRICT);
 		<form>
 			<fieldset>
 			<?php 
-
-				$file = '../config_file/config.txt';
+				$file = $CONFIG_FILE_PATH.$CONFIG_FILE_NAME;
 				if (file_exists($file)) {
 					$defaults = unserialize(file_get_contents($file));
 				}
@@ -41,6 +41,6 @@ error_reporting(E_STRICT);
 			<input type="file" name="file" id="file"><br>
 			<input type="submit" name="submit" value="Submit">
 		</form>
-		<a href="../config_file/config.txt">Right click to download configuration</a>
+		<a href="<?php echo $file ?>">Right click to download configuration</a>
 	</body>
 	</html>
