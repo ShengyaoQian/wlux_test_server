@@ -32,7 +32,7 @@ error_reporting(E_STRICT);
 					Tasks HTML &nbsp;<textarea id="taskHTML" name="taskHTML" id="taskHTML" cols="30" rows="10" ><?php if($defaults){ print $defaults['taskHTML']; }?> </textarea><br>
 					Tab Show Text &nbsp;<input id="tabShowText" type="text" name="tabShowText" value=<?php if($defaults){ print $defaults['tabShowText']; }?> required><br>
 					Tab Hide Text &nbsp;<input id="tabHideText" type="text" name="tabHideText" value=<?php if($defaults){ print $defaults['tabHideText']; }?> required><br>
-					Automatic Condition ID <input type="checkbox" id="autoconditionid"> <br>
+					Automatic Condition ID <input type="checkbox" id="autoconditionid" name="autocondditionid"> <br>
 					<input id="submitbtn" type="button" value="Submit">
 				
 			</fieldset>
