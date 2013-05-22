@@ -12,4 +12,12 @@
 	// folder where the session config file is stored
 	$CONFIG_FILE_PATH = "./config_file/";
 	$CONFIG_FILE_NAME = "config.txt";
+	
+	// database interfaces
+	$DB_USER = "db_test"
+	$DB_PASS = "WeCantDecide2"
+	$DB_DATABASE_NAME = "db_test"
+	$DB_TABLE_TRANSACTION_LOG = "TestSessionLog"
+	$DB_TABLE_SESSION_CONFIG = "SessionConfig"
+	$DB_TABLE_PARTICIPANT_LOG = "ParticipantLog"
 ?>
