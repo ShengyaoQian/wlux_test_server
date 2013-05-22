@@ -10,6 +10,6 @@
 	$sessionLogFolder = "study_results/";
 
 	// folder where the session config file is stored
-	$CONFIG_FILE_PATH = "../config_file/";
+	$CONFIG_FILE_PATH = "./config_file/";
 	$CONFIG_FILE_NAME = "config.txt";
 ?>
