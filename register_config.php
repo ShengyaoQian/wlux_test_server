@@ -19,7 +19,7 @@
 
 	$PARAMETERS = array("conditionId","cssURL","taskBarCSS",
 						"buttonText","returnURL","taskText",
-						"taskHTML","tabShowText","tabHideText");
+						"taskHTML","tabShowText","tabHideText","mode");
 
 	$is_complete_request = true;
 	for($i=0; $i<count($PARAMETERS); $i++){
