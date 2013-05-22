@@ -1,5 +1,7 @@
 $(function(){
+	checkAutoCondition(); //Check initial state of auto condition
 	$('#submitbtn').click(getJSON);
+	$('#autoconditionid').click(checkAutoCondition); //Checks to see if the auto condition is set
 });
 
 //Query's register_config.php to get JSON data
@@ -19,6 +21,25 @@ function getJSON () {
 		},
 		success: jsonSuccess
 	});
+}
+/*  Determins weather the auto condition id is set and disables the ID and css fields in the form
+ *	if the condition box is checked. If box is unchecked all fields will be available
+ *
+ */
+function checkAutoCondition (argument) {
+	// body...
+	var condition = $('#conditionId');
+	var css = $('#cssURL');
+	if($('#autoconditionid').attr('checked')){
+		condition.attr("disabled", "true");
+		condition.removeAttr("value");
+		css.attr("disabled", "true");
+		css.removeAttr("value");
+	} else {
+		condition.removeAttr('disabled');
+		css.removeAttr('disabled');
+	}
+
 }
 
 function jsonSuccess (response) {
