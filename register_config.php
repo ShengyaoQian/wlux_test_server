@@ -20,8 +20,8 @@
 	if(isset($_REQUEST["autoconditionid"]) && $_REQUEST["autoconditionid"]){
 		$PARAMETERS = array("taskBarCSS","buttonText","returnURL","taskText",
 						"taskHTML","tabShowText","tabHideText","autoconditionid");
-		//get condition ID and CSS URL from the sessions.txt
-		getConditionIDAndCSSURL($sessionDataFile);
+		//set condition ID and CSS URL from the sessions.txt
+		setConditionIDAndCSSURL($sessionDataFile);
 	}else{
 		$PARAMETERS = array("conditionId","cssURL","taskBarCSS",
 						"buttonText","returnURL","taskText",
@@ -39,7 +39,7 @@
 		}
 	}
 
-	function getConditionIDAndCSSURL($filename){
+	function setConditionIDAndCSSURL($filename){
 	    //first, obtain the data initially present in the text file
 	    $ini_handle = fopen($filename, "r");
 	    $old_string = fread($ini_handle, filesize($filename));
