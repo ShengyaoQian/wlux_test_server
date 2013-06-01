@@ -9,6 +9,7 @@ function getJSON () {
 	$.ajax('register_config.php', {
 		type: 'POST',
 		data: {
+			'autoconditionid': $('#autoconditionid').val(),
 			'conditionId': $('#conditionId').val(),
 			'cssURL': $('#cssURL').val(),
 			'taskBarCSS': $('#taskBarCSS').val(),
@@ -32,9 +33,11 @@ function checkAutoCondition (argument) {
 	var css = $('#cssURL');
 	if($('#autoconditionid').attr('checked')){
 		condition.attr("disabled", "true");
-		condition.removeAttr("value");
+		// commented out the removeAttr lines because 
+		// the fields still need data in them (for now)
+		//condition.removeAttr("value");
 		css.attr("disabled", "true");
-		css.removeAttr("value");
+		//css.removeAttr("value");
 	} else {
 		condition.removeAttr('disabled');
 		css.removeAttr('disabled');

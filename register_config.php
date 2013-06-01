@@ -16,10 +16,17 @@
 		when a path is not found
 		make sure to set up appropriate permissions
 	*/
-
-	$PARAMETERS = array("conditionId","cssURL","taskBarCSS",
+	$PARAMETERS;
+	if(isset($_REQUEST["autoconditionid"]) && $_REQUEST["autoconditionid"]){
+		$PARAMETERS = array("taskBarCSS","buttonText","returnURL","taskText",
+						"taskHTML","tabShowText","tabHideText","autoconditionid");
+		//set condition ID and CSS URL from the sessions.txt
+		setConditionIDAndCSSURL($sessionDataFile);
+	}else{
+		$PARAMETERS = array("conditionId","cssURL","taskBarCSS",
 						"buttonText","returnURL","taskText",
-						"taskHTML","tabShowText","tabHideText");
+						"taskHTML","tabShowText","tabHideText","autoconditionid");
+	}
 
 	$is_complete_request = true;
 	for($i=0; $i<count($PARAMETERS); $i++){
@@ -30,6 +37,19 @@
 			header('Content-type: application/json');
 			echo json_encode(registerConfig($_REQUEST,$CONFIG_FILE_PATH,$CONFIG_FILE_NAME));
 		}
+	}
+
+	function setConditionIDAndCSSURL($filename){
+	    //first, obtain the data initially present in the text file
+	    $ini_handle = fopen($filename, "r");
+	    $old_string = fread($ini_handle, filesize($filename));
+
+	    //parse string
+	    $array = explode(" ", $old_string);
+	    $conditionID = $array[1];
+	    $cssURL = $array[2];
+	    $PARAMETERS["conditionId"] = $conditionID;
+	    $PARAMETERS["cssURL"] = $cssURL;
 	}
 
 	function registerConfig($params,$path,$file_name){
