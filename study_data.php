@@ -15,9 +15,22 @@
 	}
 	     
     if (file_exists($CONFIG_FILE_PATH.$CONFIG_FILE_NAME)) {
-		// read config from file
-        $data = unserialize(file_get_contents($CONFIG_FILE_PATH.$CONFIG_FILE_NAME));
-        if ($data["conditionId"] == "" || $data["cssURL"] == "") {
+        // Create a connection to the database.
+        $database = 'db_test';
+        $hostname = 'wlux.uw.edu';
+        $username = 'db_test';
+        $password = 'WeCantDecide2';
+        $db = new PDO("mysql:dbname=$database;host=$hostname", $username, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        // get all the rows from the tables
+        $sessionConfig = $db->query("SELECT * FROM session_config");
+        $transactionLog = $db->query("SELECT * FROM transaction_log");
+
+
+        // Things need to be fixed below
+        // Don't know which part in the table I can find the cssURL
+        if ( $transactionLog["conditionId"] == "" || $data["cssURL"] == "") {
 			// file parsing error
             // this will trigger the jquery ajax call's error handling callback
             header("HTTP/1.1 404 Not Found");
@@ -27,7 +40,7 @@
 			if (!empty($jsonpTag)) { 
 				// format and send output
 				header('content-type: application/json');
-				echo $jsonpTag . '(' . json_encode($data) . ')';
+				echo $jsonpTag . '(' . json_encode($sessionConfig) . json_encode($transactionLog) . ')';
 			} else {
 				// no callback param name so return an error
 				// this line only works on PHP > 5.4.0, which not everyone seems to have.
